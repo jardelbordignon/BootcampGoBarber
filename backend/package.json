@@ -16,6 +16,7 @@
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
+    "date-fns": "^2.16.1",
     "express": "^4.17.1",
     "shortid": "^2.2.16"
   },

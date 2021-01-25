@@ -16,3 +16,8 @@
 
 1. Create routes
 2. yarn add shortid
+
+> Date validation (Validado a data)
+
+1. yarn add date-fns
+2. Implement
