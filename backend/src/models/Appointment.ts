@@ -1,5 +1,10 @@
 import { generate } from 'shortid'
 
+export interface CreateAppointmentDTO {
+  provider:string
+  date: Date
+}
+
 export default class Appointment {
 
   id: string
