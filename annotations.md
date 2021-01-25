@@ -31,3 +31,7 @@
 
 1. Create AppointmentsRepository
 2. feature of creating an appointment passes to the repository
+
+> Appointment List (Listando Agendamentos)
+
+1. Create all() method
