@@ -20,4 +20,14 @@
 > Date validation (Validado a data)
 
 1. yarn add date-fns
-2. Implement
+2. Implement date validation
+
+> Appointment Model (Model de Agendamento)
+
+1. Create Appointment Model
+2. Use in appointments.routes.ts
+
+> Create Repositories (Criando repositórios)
+
+1. Create AppointmentsRepository
+2. feature of creating an appointment passes to the repository
