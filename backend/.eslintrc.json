@@ -19,7 +19,7 @@
     "prettier"
   ],
   "rules": {
-    "semi": "off",
+    "delimiter": "none",
     "@typescript-eslint/semi": ["error"],
     "prettier/prettier": "error",
     "import/extensions": [

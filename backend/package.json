@@ -3,14 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "prettier": {
-    "arrowParens": "avoid",
-    "bracketSpacing": true,
-    "singleQuote": true,
-    "trailingComma": "all",
-    "endOfLine": "crlf",
-    "semicolon": false
-  },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts"
