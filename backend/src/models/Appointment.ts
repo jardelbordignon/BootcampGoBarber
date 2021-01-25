@@ -6,7 +6,7 @@ export default class Appointment {
   provider: string
   date: Date
 
-  constructor(provider:string, date:Date) {
+  constructor({ provider, date }: Omit<Appointment, 'id'>) {
     this.id = generate()
     this.provider = provider
     this.date = date
