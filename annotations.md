@@ -11,3 +11,8 @@
 1. Create .vscode/launch.json
 2. Add --inspect flag in script of the package.json
 3. app.use(express.json()) in server.ts
+
+> Appointments register (Cadastro de Agendamentos)
+
+1. Create routes
+2. yarn add shortid
