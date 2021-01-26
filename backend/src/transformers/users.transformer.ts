@@ -1,5 +1,14 @@
 import User from '../models/User'
 
+export interface TransformedUser {
+  id: string
+  name: string
+  email: string
+  created_at: Date
+  updated_at: Date
+}
+
+
 export default {
 
   renderOne(user: User) {
