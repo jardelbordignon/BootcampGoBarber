@@ -5,6 +5,7 @@ import { sign } from 'jsonwebtoken'
 import User from '../models/User'
 import usersTransformer, { TransformedUser } from '../transformers/users.transformer'
 import authConfig from '../config/auth'
+import AppError from '../errors/AppError'
 
 interface RequestDTO {
   email: string
@@ -26,13 +27,13 @@ export default class AuthenticateUserService {
     const user = await usersRepository.findOne({ where: { email } })
 
     if (!user) {
-      throw new Error(errorMessage)
+      throw new AppError(errorMessage, 401)
     }
 
     const passwordMatch = await compare(password, user.password)
 
     if (!passwordMatch) {
-      throw new Error(errorMessage)
+      throw new AppError(errorMessage, 401)
     }
 
     const { secret, expiresIn } = authConfig.jwt
