@@ -3,7 +3,7 @@ import Defaults from './Defaults'
 import User from './User'
 
 export interface CreateAppointmentDTO {
-  provider:string
+  provider_id: string
   date: Date
 }
 
