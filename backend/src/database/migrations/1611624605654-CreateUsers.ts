@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
 export class CreateUsers1611624605654 implements MigrationInterface {
 
@@ -42,9 +42,18 @@ export class CreateUsers1611624605654 implements MigrationInterface {
         ]
       })
     )
+    await queryRunner.createForeignKey('appointments', new TableForeignKey({
+      name: 'appointmentsFK',
+      columnNames: ['provider_id'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'users',
+      onDelete: 'SET NULL', // caso o prestador exclua seu registro os dados devem permanecer para o cliente
+      onUpdate: 'CASCADE'
+    }))
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey('appointments', 'appointmentsFK')
     await queryRunner.dropTable('users')
   }
 
