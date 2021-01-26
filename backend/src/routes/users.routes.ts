@@ -1,3 +1,4 @@
+import users_transformer from '../transformers/users_transformer'
 import { Router } from 'express'
 
 import CreateUserService from '../services/CreateUserService'
@@ -12,7 +13,7 @@ usersRouter.post('/', async (request, response) => {
 
     const user = await createUserService.execute({ name, email, password })
 
-    return response.json(user)
+    return response.json(users_transformer.renderOne(user))
   } catch (error) {
     return response.status(400).json({ error: error.message })
   }
