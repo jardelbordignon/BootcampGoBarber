@@ -4,3 +4,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 node_modules
+
+backend/tmp/*
+!backend/tmp/.gitkeep
