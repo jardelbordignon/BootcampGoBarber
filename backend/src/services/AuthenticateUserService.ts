@@ -1,17 +1,23 @@
 import { getRepository } from 'typeorm'
 import { compare } from 'bcryptjs'
+import { sign } from 'jsonwebtoken'
 
 import User from '../models/User'
 import usersTransformer, { TransformedUser } from '../transformers/users.transformer'
 
-interface AuthenticateProps {
+interface RequestDTO {
   email: string
   password: string
 }
 
+interface ResponseDTO {
+  user: TransformedUser
+  token: string
+}
+
 export default class AuthenticateUserService {
 
-  public async execute({ email, password }: AuthenticateProps): Promise<TransformedUser> {
+  public async execute({ email, password }: RequestDTO): Promise<ResponseDTO> {
     const errorMessage = 'Incorrect email/password combination'
 
     const usersRepository = getRepository(User)
@@ -28,7 +34,15 @@ export default class AuthenticateUserService {
       throw new Error(errorMessage)
     }
 
-    return usersTransformer.renderOne(user)
+    const token = sign({}, 'secret', {
+      subject: user.id,
+      expiresIn: '1d'
+    })
+
+    return {
+      user: usersTransformer.renderOne(user),
+      token
+    }
 
   }
 
