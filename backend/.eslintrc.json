@@ -21,6 +21,14 @@
   "rules": {
     "delimiter": "none",
     "@typescript-eslint/semi": ["error"],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "prefix": ["I"],
+        "format": ["PascalCase"]
+      }
+    ],
     "prettier/prettier": "error",
     "import/extensions": [
       "error",
