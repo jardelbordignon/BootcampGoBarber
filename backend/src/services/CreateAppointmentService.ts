@@ -6,7 +6,7 @@ import AppointmentsRepository from '../repositories/AppointmentsRepository'
 
 export default class CreateAppointmentService {
 
-  public async execute({ provider, date }: CreateAppointmentDTO): Promise<Appointment> {
+  public async execute({ provider_id, date }: CreateAppointmentDTO): Promise<Appointment> {
     const appointmentsRepository = getCustomRepository(AppointmentsRepository)
 
     const appointmentDate = startOfHour(date)
@@ -18,7 +18,7 @@ export default class CreateAppointmentService {
     }
 
     const appointment = appointmentsRepository.create({
-      provider,
+      provider_id,
       date: appointmentDate
     })
 
