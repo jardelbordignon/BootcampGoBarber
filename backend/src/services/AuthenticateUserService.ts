@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken'
 
 import User from '../models/User'
 import usersTransformer, { TransformedUser } from '../transformers/users.transformer'
+import authConfig from '../config/auth'
 
 interface RequestDTO {
   email: string
@@ -34,9 +35,11 @@ export default class AuthenticateUserService {
       throw new Error(errorMessage)
     }
 
-    const token = sign({}, 'secret', {
+    const { secret, expiresIn } = authConfig.jwt
+
+    const token = sign({}, secret, {
       subject: user.id,
-      expiresIn: '1d'
+      expiresIn
     })
 
     return {
