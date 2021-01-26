@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Column, Entity } from 'typeorm'
+import Defaults from './Defaults'
 
 export interface CreateAppointmentDTO {
   provider:string
@@ -6,21 +7,12 @@ export interface CreateAppointmentDTO {
 }
 
 @Entity('appointments')
-export default class Appointment {
-
-  @PrimaryGeneratedColumn('uuid')
-  id: string
+export default class Appointment extends Defaults {
 
   @Column()
   provider: string
 
   @Column('timestamp')
   date: Date
-
-  @CreateDateColumn()
-  created_at: Date
-
-  @UpdateDateColumn()
-  updated_at: Date
 
 }
