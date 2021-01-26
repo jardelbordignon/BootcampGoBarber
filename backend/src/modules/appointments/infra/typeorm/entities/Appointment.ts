@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import Defaults from './Defaults'
-import User from './User'
+
+import Defaults from '@/shared/entities/Defaults'
+import User from '@/modules/users/infra/typeorm/entities/User'
 
 export interface CreateAppointmentDTO {
   provider_id: string

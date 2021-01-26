@@ -2,10 +2,10 @@ import { getRepository } from 'typeorm'
 import path from 'path'
 import fs from 'fs'
 
-import { tmpDirectory } from '../config/upload'
-import User from '../models/User'
-import usersTransformer, { TransformedUser } from '../transformers/users.transformer'
-import AppError from '../errors/AppError'
+import { tmpDirectory } from '@/config/upload'
+import User from '@/modules/users/infra/typeorm/entities/User'
+import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
+import AppError from '@/shared/errors/AppError'
 
 interface Request {
   user_id: string

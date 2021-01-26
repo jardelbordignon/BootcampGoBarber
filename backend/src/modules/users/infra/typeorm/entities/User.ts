@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm'
-import Defaults from './Defaults'
+
+import Defaults from '@/shared/entities/Defaults'
 
 export interface CreateUserDTO {
   name: string

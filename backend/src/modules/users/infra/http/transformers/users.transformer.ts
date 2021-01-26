@@ -1,4 +1,4 @@
-import User from '../models/User'
+import User from '../../typeorm/entities/User'
 
 export interface TransformedUser {
   id: string

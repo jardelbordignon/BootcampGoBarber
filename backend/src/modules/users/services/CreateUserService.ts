@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm'
 import { hash } from 'bcryptjs'
 
-import User, { CreateUserDTO } from '../models/User'
-import AppError from '../errors/AppError'
+import User, { CreateUserDTO } from '@/modules/users/infra/typeorm/entities/User'
+import AppError from '@/shared/errors/AppError'
 
 export default class CreateUserService {
 
