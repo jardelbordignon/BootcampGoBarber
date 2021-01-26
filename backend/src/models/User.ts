@@ -19,4 +19,7 @@ export default class User extends Defaults {
   @Column()
   password: string
 
+  @Column()
+  avatar: string
+
 }
