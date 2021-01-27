@@ -16,7 +16,6 @@ export default class CreateAppointmentService {
 
   public async execute({ provider_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
 
-    console.log(provider_id, date )
     const appointmentDate = startOfHour(date)
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(appointmentDate)
