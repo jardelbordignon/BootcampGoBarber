@@ -11,6 +11,19 @@ export default {
   // Automatically clear mock calls and instances between every test
   clearMocks: true,
 
+  // Coverage configurations
+  // Indicates whether the coverage information should be collected
+  collectCoverage: true,
+  // Indicates the path and type of the files to be watched
+  collectCoverageFrom: ['<rootDir>/src/modules/**/services/*.ts'],
+  // The directory where Jest should output its coverage files
+  coverageDirectory: 'appTests',
+  // A list of reporter names that Jest uses when writing coverage reports
+  coverageReporters: [
+    'text-summary',
+    'lcov'
+  ],
+
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: pathsToModuleNameMapper(tsconfig_compilerOptions_paths, { prefix: '<rootDir>/src/' }),
 
