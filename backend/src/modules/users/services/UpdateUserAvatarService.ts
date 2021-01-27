@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import { injectable, inject } from 'tsyringe'
 
 import { tmpDirectory } from '@/config/upload'
 import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
@@ -11,9 +12,13 @@ interface IRequest {
   avatarFilename: string
 }
 
+@injectable()
 export default class UpdateUserAvatarService {
 
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<TransformedUser> {
 

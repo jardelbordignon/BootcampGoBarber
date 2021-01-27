@@ -5,7 +5,9 @@ import 'express-async-errors'
 import { tmpDirectory } from '@/config/upload'
 import AppError from '@/shared/errors/AppError'
 import routes from '@/shared/infra/http/routes'
-import '@/shared/infra/typeorm'
+
+import '@/shared/infra/typeorm' // database
+import '@/shared/dependencyInjector' // dependency injection
 
 const app = express()
 
