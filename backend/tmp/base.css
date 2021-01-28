@@ -263,14 +263,16 @@ table.coverage td span.cline-any {
 .highlighted .cstat-no,
 .highlighted .fstat-no,
 .highlighted .cbranch-no {
-  background: #c21f39 !important;
+  border: 1px solid #c21f39 !important;
 }
 /* medium red */
 .cstat-no,
 .fstat-no,
 .cbranch-no,
 .cbranch-no {
-  background: #f6c6ce;
+  border: 1px solid #c21f39 !important;
+  padding: 1px 20px 1px 0;
+  background: transparent;
 }
 /* light red */
 .low,
