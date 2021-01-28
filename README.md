@@ -64,3 +64,6 @@
 - Os agendamentos devem estar disponíveis entre 8h e 18h (primeiro às 8h, último as 17h)
 - O usuário não pode agendar em um horário já reservado
 - O usuário não pode agendar em um serviço consigo mesmo
+
+O arquivo tmp/base.css é uma dark style para os Jest coverage reports, basta substituir no path
+node_modules/istanbul-reports/lib/html/assets/base.css

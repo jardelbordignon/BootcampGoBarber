@@ -11,4 +11,4 @@ annotationsFrontend.md
 annotationsMobile.md
 
 backend/tmp/*
-!backend/tmp/.gitkeep
+!backend/tmp/base.css
