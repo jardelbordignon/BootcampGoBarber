@@ -1,11 +1,12 @@
-import { compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken'
+import 'reflect-metadata'
 import { injectable, inject } from 'tsyringe'
+import { sign } from 'jsonwebtoken'
 
+import IHashProvider from '@/modules/users/providers/HashProvider/models/IHashProvider';
+import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
 import authConfig from '@/config/auth'
 import AppError from '@/shared/errors/AppError'
-import IUsersRepository from '../repositories/IUsersRepository'
 
 interface IRequest {
   email: string
@@ -22,7 +23,10 @@ export default class AuthenticateUserService {
 
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -34,7 +38,9 @@ export default class AuthenticateUserService {
       throw new AppError(errorMessage, 401)
     }
 
-    const passwordMatch = await compare(password, user.password)
+    const passwordMatch = await this.hashProvider.compareHash(
+      password, user.password
+    )
 
     if (!passwordMatch) {
       throw new AppError(errorMessage, 401)
