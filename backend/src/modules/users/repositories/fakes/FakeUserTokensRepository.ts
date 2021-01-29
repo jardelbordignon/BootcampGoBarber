@@ -19,5 +19,12 @@ export default class UserTokensRepository implements IUserTokensRepository {
     return userToken
   }
 
+
+  public async findByToken(token: string): Promise<UserToken | undefined> {
+    const userToken = await this.userTokens.find(userToken => userToken.token === token)
+
+    return userToken
+  }
+
 }
 
