@@ -39,7 +39,7 @@ describe('UpdateUserAvatar', () => {
       fakeUsersRepository, fakeStorageProvider
     )
 
-    expect(
+    await expect(
       updateUserAvatarService.execute({
         user_id: 'non-existing-user',
         avatarFilename: 'avatar.jpg'
