@@ -1,5 +1,6 @@
 import { container as dependencyInjector } from 'tsyringe'
 
+import '@/shared/providers'
 import '@/modules/users/providers'
 
 import IAppointmentsRepository from '@/modules/appointments/repositories/IAppointmentsRepository'

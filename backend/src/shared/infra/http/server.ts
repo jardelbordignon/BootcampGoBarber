@@ -2,18 +2,18 @@ import 'reflect-metadata'
 import express, { Request, Response, NextFunction } from 'express'
 import 'express-async-errors'
 
-import { tmpDirectory } from '@/config/upload'
+import uploadConfig from '@/config/upload'
 import AppError from '@/shared/errors/AppError'
 import routes from '@/shared/infra/http/routes'
 
 import '@/shared/infra/typeorm' // database
-import '@/shared/dependencyInjector' // dependency injection
+import '../../DependencyInjectionContainer'
 
 const app = express()
 
 app.use(express.json())
 
-app.use('/files', express.static(tmpDirectory))
+app.use('/files', express.static(uploadConfig.uploadsFolder))
 
 app.use(routes)
 
