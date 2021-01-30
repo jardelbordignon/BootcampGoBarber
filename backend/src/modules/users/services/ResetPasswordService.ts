@@ -1,6 +1,9 @@
 import { injectable, inject } from 'tsyringe'
 import { isAfter, addHours } from 'date-fns'
 
+import { DI_USERS_REPOSITORY, DI_USER_TOKENS_REPOSITORY} from '@/shared/DependencyInjectionContainer'
+import { DI_HASH_PROVIDER } from '../providers'
+
 import AppError from '@/shared/errors/AppError'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import IUserTokensRepository from '@/modules/users/repositories/IUserTokensRepository'
@@ -15,13 +18,13 @@ interface IRequest {
 export default class ResetPasswordService {
 
   constructor(
-    @inject('UsersRepository')
+    @inject(DI_USERS_REPOSITORY)
     private usersRepository: IUsersRepository,
 
-    @inject('UserTokensRepository')
+    @inject(DI_USER_TOKENS_REPOSITORY)
     private userTokensRepository: IUserTokensRepository,
 
-    @inject('HashProvider')
+    @inject(DI_HASH_PROVIDER)
     private hashProvider: IHashProvider,
   ) {}
 

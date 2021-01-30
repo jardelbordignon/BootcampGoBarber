@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe'
 
+import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
+import { DI_HASH_PROVIDER } from '../providers'
 import AppError from '@/shared/errors/AppError'
 import ICreateUserDTO from '@/modules/users/dtos/ICreateUserDTO'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
@@ -10,10 +12,10 @@ import User from '@/modules/users/infra/typeorm/entities/User'
 export default class CreateUserService {
 
   constructor(
-    @inject('UsersRepository')
+    @inject(DI_USERS_REPOSITORY)
     private usersRepository: IUsersRepository,
 
-    @inject('HashProvider')
+    @inject(DI_HASH_PROVIDER)
     private hashProvider: IHashProvider
   ) {}
 

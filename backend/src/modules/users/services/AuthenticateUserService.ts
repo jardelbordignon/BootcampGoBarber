@@ -2,7 +2,9 @@ import 'reflect-metadata'
 import { injectable, inject } from 'tsyringe'
 import { sign } from 'jsonwebtoken'
 
-import IHashProvider from '@/modules/users/providers/HashProvider/models/IHashProvider';
+import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
+import { DI_HASH_PROVIDER } from '../providers'
+import IHashProvider from '@/modules/users/providers/HashProvider/models/IHashProvider'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
 import authConfig from '@/config/auth'
@@ -22,10 +24,10 @@ interface IResponse {
 export default class AuthenticateUserService {
 
   constructor(
-    @inject('UsersRepository')
+    @inject(DI_USERS_REPOSITORY)
     private usersRepository: IUsersRepository,
 
-    @inject('HashProvider')
+    @inject(DI_HASH_PROVIDER)
     private hashProvider: IHashProvider
   ) {}
 
