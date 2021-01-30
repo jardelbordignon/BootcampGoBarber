@@ -6,7 +6,7 @@ import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 import { DI_HASH_PROVIDER } from '../providers'
 import IHashProvider from '@/modules/users/providers/HashProvider/models/IHashProvider'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
-import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
+import usersTransformer, { TransformedUser } from '@/modules/users/views/users_transformer'
 import authConfig from '@/config/auth'
 import AppError from '@/shared/errors/AppError'
 
