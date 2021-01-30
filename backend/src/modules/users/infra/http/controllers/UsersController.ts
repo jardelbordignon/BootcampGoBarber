@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { container as dependencyInjector } from 'tsyringe'
 
-import usersTransformer from '@/modules/users/infra/http/transformers/users.transformer'
+import usersTransformer from '@/modules/users/views/users_transformer'
 import CreateUserService from '@/modules/users/services/CreateUserService'
 
 export default class UsersController {

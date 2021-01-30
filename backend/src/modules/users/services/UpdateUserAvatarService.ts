@@ -6,7 +6,7 @@ import { DI_STORAGE_PROVIDER } from '@/shared/providers'
 import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 
 import AppError from '@/shared/errors/AppError'
-import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
+import usersTransformer, { TransformedUser } from '@/modules/users/views/users_transformer'
 import IUsersRepository from '../repositories/IUsersRepository'
 import IStorageProvider from '@/shared/providers/StorageProvider/models/IStorageProvider'
 
