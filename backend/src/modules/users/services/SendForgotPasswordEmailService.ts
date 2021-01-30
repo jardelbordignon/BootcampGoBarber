@@ -1,5 +1,8 @@
 import { injectable, inject } from 'tsyringe'
 
+import { DI_USERS_REPOSITORY, DI_USER_TOKENS_REPOSITORY} from '@/shared/DependencyInjectionContainer'
+import { DI_MAIL_PROVIDER } from '@/shared/providers'
+
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import IUserTokensRepository from '@/modules/users/repositories/IUserTokensRepository'
 import IMailProvider from '@/shared/providers/MailProvider/models/IMailProvider'
@@ -13,13 +16,13 @@ interface IRequest {
 export default class SendForgotPasswordEmailService {
 
   constructor(
-    @inject('UsersRepository')
+    @inject(DI_USERS_REPOSITORY)
     private usersRepository: IUsersRepository,
 
-    @inject('MailProvider')
+    @inject(DI_MAIL_PROVIDER)
     private mailProvider: IMailProvider,
 
-    @inject('UserTokensRepository')
+    @inject(DI_USER_TOKENS_REPOSITORY)
     private userTokensRepository: IUserTokensRepository,
   ) {}
 
@@ -31,9 +34,9 @@ export default class SendForgotPasswordEmailService {
       throw new AppError('User does not exists')
     }
 
-    await this.userTokensRepository.generate(user.id)
+    const { token } = await this.userTokensRepository.generate(user.id)
 
-    this.mailProvider.sendEmail(email, 'Recuperação de senha')
+    await this.mailProvider.sendMail(email, `Recuperação de senha: ${token}`)
   }
 
 }

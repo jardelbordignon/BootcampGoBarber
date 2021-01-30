@@ -2,9 +2,11 @@ import path from 'path'
 import fs from 'fs'
 import { injectable, inject } from 'tsyringe'
 
-import uploadConfig from '@/config/upload'
-import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
+import { DI_STORAGE_PROVIDER } from '@/shared/providers'
+import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
+
 import AppError from '@/shared/errors/AppError'
+import usersTransformer, { TransformedUser } from '@/modules/users/infra/http/transformers/users.transformer'
 import IUsersRepository from '../repositories/IUsersRepository'
 import IStorageProvider from '@/shared/providers/StorageProvider/models/IStorageProvider'
 
@@ -17,10 +19,10 @@ interface IRequest {
 export default class UpdateUserAvatarService {
 
   constructor(
-    @inject('UsersRepository')
+    @inject(DI_USERS_REPOSITORY)
     private usersRepository: IUsersRepository,
 
-    @inject('StorageProvider')
+    @inject(DI_STORAGE_PROVIDER)
     private storageProvider: IStorageProvider
   ) {}
 

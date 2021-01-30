@@ -1,6 +1,7 @@
 import { startOfHour } from 'date-fns'
 import { injectable, inject } from 'tsyringe'
 
+import { DI_APPOINTMENTS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 import IAppointmentsRepository from '@/modules/appointments/repositories/IAppointmentsRepository'
 import ICreateAppointmentDTO from '@/modules/appointments/dtos/ICreateAppointmentDTO'
 import Appointment from '@/modules/appointments/infra/typeorm/entities/Appointment'
@@ -10,7 +11,7 @@ import AppError from '@/shared/errors/AppError'
 export default class CreateAppointmentService {
 
   constructor(
-    @inject('AppointmentsRepository')
+    @inject(DI_APPOINTMENTS_REPOSITORY)
     private appointmentsRepository: IAppointmentsRepository
   ) {}
 

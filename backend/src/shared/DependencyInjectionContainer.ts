@@ -1,3 +1,7 @@
+export const DI_APPOINTMENTS_REPOSITORY = 'DI_APPOINTMENTS_REPOSITORY'
+export const DI_USERS_REPOSITORY = 'DI_USERS_REPOSITORY'
+export const DI_USER_TOKENS_REPOSITORY = 'DI_USER_TOKENS_REPOSITORY'
+
 import { container as dependencyInjector } from 'tsyringe'
 
 import '@/shared/providers'
@@ -13,13 +17,13 @@ import IUserTokensRepository from '@/modules/users/repositories/IUserTokensRepos
 import UserTokensRepository from '@/modules/users/infra/typeorm/repositories/UserTokensRepository'
 
 dependencyInjector.registerSingleton<IAppointmentsRepository>(
-  'AppointmentsRepository', AppointmentsRepository
+  DI_APPOINTMENTS_REPOSITORY, AppointmentsRepository
 )
 
 dependencyInjector.registerSingleton<IUsersRepository>(
-  'UsersRepository', UsersRepository
+  DI_USERS_REPOSITORY, UsersRepository
 )
 
 dependencyInjector.registerSingleton<IUserTokensRepository>(
-  'UserTokensRepository', UserTokensRepository
+  DI_USER_TOKENS_REPOSITORY, UserTokensRepository
 )

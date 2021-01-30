@@ -12,3 +12,4 @@ annotationsMobile.md
 
 backend/tmp/*
 !backend/tmp/base.css
+backend/*.lock
