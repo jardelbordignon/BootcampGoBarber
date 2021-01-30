@@ -13,6 +13,7 @@ export default class UserTokensRepository implements IUserTokensRepository {
     userToken.id = generate()
     userToken.token = generate()
     userToken.user_id = user_id
+    userToken.created_at = userToken.updated_at = new Date()
 
     this.userTokens.push(userToken)
 
