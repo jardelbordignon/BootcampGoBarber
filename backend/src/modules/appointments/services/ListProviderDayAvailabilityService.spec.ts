@@ -17,7 +17,13 @@ describe('ListProviderDayAvailabilityService', () => {
 
 
   it('should be able to list the day availability from provider', async () => {
-    const hours = [8, 10, 11, 14]
+
+    // Altera o funcionamento padrão do método Date retorando 2021/jan/31 11:00:00
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => (
+      new Date(2021, 0, 31, 11).getTime()
+    ))
+
+    const hours = [8, 11, 14, 15]
 
     hours.map(async hour => (
       await fakeAppointmentsRepository.create({
@@ -35,11 +41,14 @@ describe('ListProviderDayAvailabilityService', () => {
 
     expect(availability).toEqual(expect.arrayContaining([
       { hour: 8, available: false },
-      { hour: 9, available: true },
+      { hour: 9, available: false },
       { hour: 10, available: false },
       { hour: 11, available: false },
+      { hour: 12, available: true },
       { hour: 13, available: true },
-      { hour: 14, available: false }
+      { hour: 14, available: false },
+      { hour: 15, available: false },
+      { hour: 16, available: true }
     ]))
 
   })
