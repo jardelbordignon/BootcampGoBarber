@@ -1,16 +1,16 @@
 import AppError from '@/shared/errors/AppError'
 
 import FakeAppointmentsRepository from '@/modules/appointments/repositories/fakes/FakeAppointmentsRepository'
-import ListProviderMounthAvailabilityService from './ListProviderMounthAvailabilityService'
+import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService'
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository
-let listProviderMounthAvailabilityService: ListProviderMounthAvailabilityService
+let listProviderMonthAvailabilityService: ListProviderMonthAvailabilityService
 
 describe('ListProviderMounthAvailabilityService', () => {
 
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository()
-    listProviderMounthAvailabilityService = new ListProviderMounthAvailabilityService(
+    listProviderMonthAvailabilityService = new ListProviderMonthAvailabilityService(
       fakeAppointmentsRepository
     )
   })
@@ -30,7 +30,7 @@ describe('ListProviderMounthAvailabilityService', () => {
       })
     ))
 
-    const availability = await listProviderMounthAvailabilityService.execute({
+    const availability = await listProviderMonthAvailabilityService.execute({
       provider_id: 'user',
       year: 2021,
       month: 1 // jan
