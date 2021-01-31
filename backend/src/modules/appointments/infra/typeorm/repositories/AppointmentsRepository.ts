@@ -3,8 +3,8 @@ import { getRepository, Raw, Repository } from 'typeorm'
 import Appointment from '@/modules/appointments/infra/typeorm/entities/Appointment'
 import IAppointmentRepository from '@/modules/appointments/repositories/IAppointmentsRepository'
 import ICreateAppointmentDTO from '@/modules/appointments/dtos/ICreateAppointmentDTO'
-import IFindAllInMonthFromProviderDTO from '@/modules/users/dtos/IFindAllInMonthFromProviderDTO'
-import IFindAllInDayFromProviderDTO from '@/modules/users/dtos/IFindAllInDayFromProviderDTO'
+import IFindAllInMonthFromProviderDTO from '@/modules/appointments/dtos/IFindAllInMonthFromProviderDTO'
+import IFindAllInDayFromProviderDTO from '@/modules/appointments/dtos/IFindAllInDayFromProviderDTO'
 
 export default class AppointmentsRepository implements IAppointmentRepository {
 
