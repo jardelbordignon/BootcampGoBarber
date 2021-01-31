@@ -16,7 +16,7 @@ type IResponse = Array<{
 }>
 
 @injectable()
-export default class ListProviderMounthAvailabilityService {
+export default class ListProviderMonthAvailabilityService {
 
   constructor(
     @inject(DI_APPOINTMENTS_REPOSITORY)
@@ -38,8 +38,6 @@ export default class ListProviderMounthAvailabilityService {
 
       return { day, available: appointmentsInDay.length < 10}
     })
-
-    console.log(availability)
 
     return availability
   }
