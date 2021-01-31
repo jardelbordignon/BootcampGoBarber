@@ -4,7 +4,7 @@ import { verify } from 'jsonwebtoken'
 import authConfig from '@/config/auth'
 import AppError from '@/shared/errors/AppError'
 
-interface TokenPayload {
+interface ITokenPayload {
   iat: number
   exp: number
   sub: string
@@ -23,7 +23,7 @@ export default function ensureAuthenticated(
   const [, token] = authHeader.split(' ')
 
   try {
-    const { sub: id } = verify(token, authConfig.jwt.secret) as TokenPayload
+    const { sub: id } = verify(token, authConfig.jwt.secret) as ITokenPayload
 
     request.user = { id }
 
