@@ -37,7 +37,7 @@ describe('UpdateProfileService', () => {
   })
 
 
-  it('should not be able to update the profile with inexisting user', async () => {
+  it('should not be able to update the profile from inexisting user', async () => {
     await expect(
       updateProfileService.execute({
         user_id: 'inexisting-user',
