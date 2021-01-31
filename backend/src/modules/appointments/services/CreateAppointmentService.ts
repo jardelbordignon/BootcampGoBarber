@@ -15,7 +15,7 @@ export default class CreateAppointmentService {
     private appointmentsRepository: IAppointmentsRepository
   ) {}
 
-  public async execute({ provider_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
+  public async execute({ provider_id, client_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
 
     const appointmentDate = startOfHour(date)
 
@@ -27,6 +27,7 @@ export default class CreateAppointmentService {
 
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      client_id,
       date: appointmentDate
     })
 

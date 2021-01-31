@@ -42,10 +42,10 @@ export default class AppointmentsRepository implements IAppointmentRepository {
   }
 
 
-  public async create({ provider_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
+  public async create({ provider_id, client_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment()
 
-    Object.assign(appointment, { id: generate(), provider_id, date })
+    Object.assign(appointment, { id: generate(), provider_id, client_id, date })
 
     this.appointments.push(appointment)
 

@@ -9,9 +9,16 @@ export default class Appointment extends Defaults {
   @Column()
   provider_id: string
 
-  @ManyToOne(() => User) // many appointments to one user
+  @ManyToOne(() => User) // many appointments to one provider
   @JoinColumn({ name: 'provider_id'})
   provider: User
+
+  @Column()
+  client_id: string
+
+  @ManyToOne(() => User) // many appointments to one client
+  @JoinColumn({ name: 'client_id'})
+  client: User
 
   @Column('timestamp')
   date: Date
