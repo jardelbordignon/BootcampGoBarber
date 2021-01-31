@@ -25,13 +25,14 @@ describe('ListProviderMounthAvailabilityService', () => {
 
     daysAndHours.map(async appoint => (
       await fakeAppointmentsRepository.create({
-        provider_id: 'user',
+        provider_id: 'provider',
+        client_id: 'client',
         date: new Date(2021, 0, appoint[0], appoint[1], 0, 0) // 2021/jan/29 10:00:00 ...
       })
     ))
 
     const availability = await listProviderMonthAvailabilityService.execute({
-      provider_id: 'user',
+      provider_id: 'provider',
       year: 2021,
       month: 1 // jan
     })

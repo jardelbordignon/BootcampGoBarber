@@ -21,7 +21,7 @@ export default class CreateUserTokens1611971695652 implements MigrationInterface
           },
           {
             name: 'user_id',
-            type: 'varchar'
+            type: 'varchar(40)'
           },
           {
             name: 'created_at',

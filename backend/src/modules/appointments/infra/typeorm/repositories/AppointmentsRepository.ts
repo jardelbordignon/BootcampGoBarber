@@ -55,8 +55,8 @@ export default class AppointmentsRepository implements IAppointmentRepository {
   }
 
 
-  public async create({ provider_id, date}: ICreateAppointmentDTO): Promise<Appointment> {
-    const appointment = this.ormRepository.create({ provider_id, date })
+  public async create({ provider_id, client_id, date}: ICreateAppointmentDTO): Promise<Appointment> {
+    const appointment = this.ormRepository.create({ provider_id, client_id, date })
 
     await this.ormRepository.save(appointment)
 

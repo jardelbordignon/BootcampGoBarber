@@ -17,16 +17,21 @@ export class CreateUsers1611624605654 implements MigrationInterface {
           },
           {
             name: 'name',
-            type: 'varchar'
+            type: 'varchar(100)'
           },
           {
             name: 'email',
-            type: 'varchar',
+            type: 'varchar(120)',
             isUnique: true
           },
           {
             name: 'password',
             type: 'varchar'
+          },
+          {
+            name: 'avatar',
+            type: 'varchar(100)',
+            isNullable: true
           },
           {
             name: 'created_at',
@@ -43,11 +48,20 @@ export class CreateUsers1611624605654 implements MigrationInterface {
       })
     )
     await queryRunner.createForeignKey('appointments', new TableForeignKey({
-      name: 'appointmentsFK',
+      name: 'ProviderFK',
       columnNames: ['provider_id'],
       referencedColumnNames: ['id'],
       referencedTableName: 'users',
       onDelete: 'SET NULL', // caso o prestador exclua seu registro os dados devem permanecer para o cliente
+      onUpdate: 'CASCADE'
+    }))
+
+    await queryRunner.createForeignKey('appointments', new TableForeignKey({
+      name: 'ClientFK',
+      columnNames: ['client_id'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'users',
+      onDelete: 'SET NULL', // caso o cliente exclua seu registro os dados devem permanecer para o prestador
       onUpdate: 'CASCADE'
     }))
   }
