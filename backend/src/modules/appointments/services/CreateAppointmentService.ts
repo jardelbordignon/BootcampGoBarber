@@ -20,6 +20,8 @@ export default class CreateAppointmentService {
 
     const appointmentDate = startOfHour(date)
 
+    console.log(appointmentDate)
+
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError("You can't create an appointment on a past date.")
     }
@@ -28,7 +30,6 @@ export default class CreateAppointmentService {
       throw new AppError("You can't create an appointment with yourself.")
     }
 
-    console.log('getHours(appointmentDate)', getHours(appointmentDate))
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
       throw new AppError('You can only create an appointment between 8am and 5pm')
     }

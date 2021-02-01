@@ -29,7 +29,7 @@ export default class AppointmentsRepository implements IAppointmentRepository {
       where: {
         provider_id,
         date: Raw(dateFieldName =>
-          `to_char(${dateFieldName}, 'MM-YYYY') = '${parseMonth}-${year}'`
+          `DATE_FORMAT(${dateFieldName}, "%Y-%m") = '${year}-${parseMonth}'`
         )
       }
     })
@@ -46,7 +46,7 @@ export default class AppointmentsRepository implements IAppointmentRepository {
       where: {
         provider_id,
         date: Raw(dateFieldName =>
-          `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parseDay}-${parseMonth}-${year}'`
+          `DATE_FORMAT(${dateFieldName}, "%Y-%m-%d") = '${year}-${parseMonth}-${parseDay}'`
         )
       }
     })
