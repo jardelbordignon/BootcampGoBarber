@@ -10,33 +10,70 @@ describe('CreateAppointmentService', () => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository()
     createAppointmentService = new CreateAppointmentService(fakeAppointmentsRepository)
 
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      return new Date(2021, 0, 1, 11).getTime()
+    })
   })
 
   it('should be able to create a new appointment', async () => {
     const appointment = await createAppointmentService.execute({
       provider_id: 'provider',
       client_id: 'client',
-      date: new Date()
+      date: new Date(2021, 0, 1, 12)
     })
 
     expect(appointment).toHaveProperty('id')
     expect(appointment.provider_id).toBe('provider')
   })
 
+
   it('should not be able to create two appointments on the same time', async () => {
-    const appointmentDate = new Date(2021, 1, 27, 11)
+    const date = new Date(2021, 0, 1, 12)
 
     await createAppointmentService.execute({
       provider_id: 'provider',
       client_id: 'client',
-      date: appointmentDate
+      date
     })
 
     await expect(
       createAppointmentService.execute({
         provider_id: 'provider',
         client_id: 'client2',
-        date: appointmentDate
+        date
+      })
+    ).rejects.toBeInstanceOf(AppError)
+  })
+
+
+  it('should not be able to create an appointment on a past date', async () => {
+    await expect(
+      createAppointmentService.execute({
+        provider_id: 'provider',
+        client_id: 'client',
+        date: new Date(2021, 0, 1, 10)
+      })
+    ).rejects.toBeInstanceOf(AppError)
+  })
+
+
+  it('should not be able to create an appointment with same client and provider', async () => {
+    await expect(
+      createAppointmentService.execute({
+        provider_id: 'same-user',
+        client_id: 'same-user',
+        date: new Date(2021, 0, 1, 14)
+      })
+    ).rejects.toBeInstanceOf(AppError)
+  })
+
+
+  it('should not be able to create an appointment before 8am and after 5pm', async () => {
+    await expect(
+      createAppointmentService.execute({
+        provider_id: 'provider',
+        client_id: 'client2',
+        date: new Date(2021, 0, 1, 18)
       })
     ).rejects.toBeInstanceOf(AppError)
   })
