@@ -7,7 +7,7 @@ import ICreateAppointmentDTO from '@/modules/appointments/dtos/ICreateAppointmen
 import IFindAllInMonthFromProviderDTO from '@/modules/appointments/dtos/IFindAllInMonthFromProviderDTO'
 import IFindAllInDayFromProviderDTO from '@/modules/appointments/dtos/IFindAllInDayFromProviderDTO'
 
-export default class AppointmentsRepository implements IAppointmentRepository {
+export default class FakeAppointmentsRepository implements IAppointmentRepository {
 
   private appointments: Appointment[] = []
 
