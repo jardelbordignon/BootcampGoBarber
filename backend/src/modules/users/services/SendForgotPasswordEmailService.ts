@@ -8,6 +8,7 @@ import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import IUserTokensRepository from '@/modules/users/repositories/IUserTokensRepository'
 import IMailProvider from '@/shared/providers/MailProvider/models/IMailProvider'
 import AppError from '@/shared/errors/AppError'
+import { appWebUrl } from '@/config/dotenv'
 
 interface IRequest {
   email: string
@@ -48,7 +49,7 @@ export default class SendForgotPasswordEmailService {
       templateData: {
         variables: {
           name: user.name,
-          link: `${process.env.APP_WEB_URL}/reset_password?token=${token}`
+          link: `${appWebUrl}/reset_password?token=${token}`
         },
         file: forgotPasswordTemplate
       }
