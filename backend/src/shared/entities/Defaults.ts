@@ -1,14 +1,9 @@
-import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { PrimaryGeneratedColumn } from 'typeorm'
+import CreatedAtUpdatedAt from './CreatedAtUpdatedAt'
 
-export default class Defaults {
+export default class Defaults extends CreatedAtUpdatedAt {
 
   @PrimaryGeneratedColumn('uuid')
   id: string
-
-  @CreateDateColumn()
-  created_at: Date
-
-  @UpdateDateColumn()
-  updated_at: Date
 
 }
