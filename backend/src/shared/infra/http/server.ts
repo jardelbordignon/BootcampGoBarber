@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import express, { Request, Response, NextFunction } from 'express'
+import { errors } from 'celebrate'
 import 'express-async-errors'
 
 import uploadConfig from '@/config/upload'
@@ -16,6 +17,8 @@ app.use(express.json())
 app.use('/files', express.static(uploadConfig.uploadsFolder))
 
 app.use(routes)
+
+app.use(errors()) // celebrate routes validations errors
 
 app.use((error: Error, request: Request, response: Response, next: NextFunction) => {
   // se o erro for gerado num AppError em qualquer lugar da aplicação
