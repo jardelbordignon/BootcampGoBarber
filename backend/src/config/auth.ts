@@ -1,7 +1,7 @@
 export default {
 
   jwt: {
-    secret: 'comparecomprameucocoporquequempoucocococomprapoucocococome',
+    secret: process.env.APP_SECRET,
     expiresIn: '1d'
   }
 
