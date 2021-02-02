@@ -16,11 +16,14 @@ export default class DiskStorageProvider implements IStorageProvider{
   }
 
   public async deleteFile(file: string): Promise<void> {
-    const filePath = path.resolve(uploadConfig.tmpFolder, file)
+    const tmpFilePath = path.resolve(uploadConfig.tmpFolder, file)
+    const oldFilePath = path.resolve(uploadConfig.uploadsFolder, file)
 
-    if (!fs.existsSync(filePath)) return
+    if (fs.existsSync(tmpFilePath))
+      await fs.promises.unlink(tmpFilePath)
 
-    await fs.promises.unlink(filePath)
+    if (fs.existsSync(oldFilePath))
+      await fs.promises.unlink(oldFilePath)
   }
 
 }

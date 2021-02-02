@@ -1,7 +1,9 @@
+import { appSecret } from './dotenv'
+
 export default {
 
   jwt: {
-    secret: process.env.APP_SECRET,
+    secret: appSecret!,
     expiresIn: '1d'
   }
 

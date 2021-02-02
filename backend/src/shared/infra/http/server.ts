@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import 'dotenv/config'
+import * as dotenv from 'dotenv'
 
 import express, { Request, Response, NextFunction } from 'express'
 import { errors } from 'celebrate'
@@ -11,6 +11,8 @@ import routes from '@/shared/infra/http/routes'
 
 import '@/shared/infra/typeorm' // database
 import '../../DependencyInjectionContainer'
+
+dotenv.config()
 
 const app = express()
 
