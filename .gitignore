@@ -10,6 +10,8 @@ annotationsBackend.md
 annotationsFrontend.md
 annotationsMobile.md
 
+backend/.env
+backend/ormconfig.json
 backend/tmp/*
 !backend/tmp/base.css
 backend/*.lock
