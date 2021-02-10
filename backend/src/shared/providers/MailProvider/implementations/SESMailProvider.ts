@@ -3,7 +3,7 @@ import { injectable, inject } from 'tsyringe'
 import aws from 'aws-sdk'
 
 import mailConfig from '@/config/mail'
-import { DI_MAIL_TEMPLATE_PROVIDER } from '@/shared/providers'
+import { DI_MAIL_TEMPLATE_PROVIDER } from '@/shared/providers/MailTemplateProvider'
 import IMailTemplateProvider from '@/shared/providers/MailTemplateProvider/models/IMailTemplateProvider'
 import IMailProvider from '../models/IMailProvider'
 import ISendMailDTO from '../dtos/ISendMailDTO'
