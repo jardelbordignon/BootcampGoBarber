@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { injectable, inject } from 'tsyringe'
 
-import { DI_STORAGE_PROVIDER } from '@/shared/providers'
+import { DI_STORAGE_PROVIDER } from '@/shared/providers/StorageProvider'
 import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 
 import AppError from '@/shared/errors/AppError'

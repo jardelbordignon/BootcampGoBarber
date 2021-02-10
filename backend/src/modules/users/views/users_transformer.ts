@@ -1,6 +1,6 @@
 import User from '@/modules/users/infra/typeorm/entities/User';
 
-import { appApiUrl } from '@/config/dotenv'
+import { appApiUrl, storageDriver, storageBucket } from '@/config/dotenv'
 
 export interface TransformedUser {
   id: string
@@ -12,15 +12,24 @@ export interface TransformedUser {
 }
 
 
+let url: string | undefined
+switch (storageDriver) {
+  case 'disk':
+    url = `${appApiUrl}/files/`;
+  case 's3':
+    url = `https://${storageBucket}.s3.amazonaws.com/`;
+}
+
 export default {
 
   renderOne(user: User) {
+    console.log('uploadConfig.driver', storageDriver)
     return {
       id: user.id,
       name: user.name,
       email: user.email,
       //password: user.password,
-      avatar: user.avatar ? `${appApiUrl}/files/${user.avatar}` : null,
+      avatar: user.avatar ? url+user.avatar : null,
       created_at: user.created_at,
       updated_at: user.updated_at
     }
