@@ -14,8 +14,9 @@ switch (process.env.NODE_ENV) {
     path = `${__dirname}/../.env`
 }
 
-dotenv.config({ path })
 
 export const appSecret = process.env.APP_SECRET
 export const appWebUrl = process.env.APP_WEB_URL
 export const appApiUrl = process.env.APP_API_URL
+export const storageDriver = process.env.STORAGE_DRIVER
+export const storageBucket = process.env.STORAGE_BUCKET
