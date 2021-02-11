@@ -7,6 +7,7 @@ import 'express-async-errors'
 
 import uploadConfig from '@/config/upload'
 import AppError from '@/shared/errors/AppError'
+import rateLimiter from './middlewares/rateLimiter'
 import routes from '@/shared/infra/http/routes'
 
 import '@/shared/infra/typeorm' // database
@@ -15,6 +16,8 @@ import '../../DependencyInjectionContainer'
 dotenv.config()
 
 const app = express()
+
+app.use(rateLimiter)
 
 app.use(express.json())
 

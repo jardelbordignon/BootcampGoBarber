@@ -20,3 +20,9 @@ export const appWebUrl = process.env.APP_WEB_URL
 export const appApiUrl = process.env.APP_API_URL
 export const storageDriver = process.env.STORAGE_DRIVER
 export const storageBucket = process.env.STORAGE_BUCKET
+
+export const redis = {
+  host: process.env.REDIS_HOST,
+  port: Number(process.env.REDIS_PORT),
+  password: process.env.REDIS_PASS || undefined
+}
