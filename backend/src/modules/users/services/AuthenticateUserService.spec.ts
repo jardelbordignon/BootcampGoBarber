@@ -8,7 +8,6 @@ import CreateUserService from './CreateUserService'
 let fakeUsersRepository: FakeUsersRepository
 let fakeHashProvider: FakeHashProvider
 let authenticateUserService: AuthenticateUserService
-let createUserService: CreateUserService
 
 describe('AuthenticateUserService', () => {
 
@@ -16,17 +15,13 @@ describe('AuthenticateUserService', () => {
     fakeUsersRepository = new FakeUsersRepository()
     fakeHashProvider = new FakeHashProvider()
 
-    createUserService = new CreateUserService(
-      fakeUsersRepository, fakeHashProvider
-    )
-
     authenticateUserService = new AuthenticateUserService(
       fakeUsersRepository, fakeHashProvider
     )
   })
 
   it('should be able to authenticate', async () => {
-    const user = await createUserService.execute({
+    const user = await fakeUsersRepository.create({
       name: 'Jardel Bordignon',
       email: 'jardel@email.com',
       password: '123456'
@@ -53,7 +48,7 @@ describe('AuthenticateUserService', () => {
 
 
   it('should not be able to authenticate with wrong password', async () => {
-    await createUserService.execute({
+    await fakeUsersRepository.create({
       name: 'Jardel Bordignon',
       email: 'jardel@email.com',
       password: '123456'
