@@ -1,11 +1,15 @@
 import { injectable, inject } from 'tsyringe'
 
-import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
-import { DI_HASH_PROVIDER } from '../providers'
 import AppError from '@/shared/errors/AppError'
-import ICreateUserDTO from '@/modules/users/dtos/ICreateUserDTO'
+
+import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
+import { DI_HASH_PROVIDER } from '../providers'
 import IHashProvider from '@/modules/users/providers/HashProvider/models/IHashProvider'
+import { DI_CACHE_PROVIDER } from '@/shared/providers/CacheProvider'
+import ICacheProvider from '@/shared/providers/CacheProvider/models/ICacheProvider'
+
+import ICreateUserDTO from '@/modules/users/dtos/ICreateUserDTO'
 import User from '@/modules/users/infra/typeorm/entities/User'
 
 @injectable()
@@ -16,7 +20,10 @@ export default class CreateUserService {
     private usersRepository: IUsersRepository,
 
     @inject(DI_HASH_PROVIDER)
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+
+    @inject(DI_CACHE_PROVIDER)
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({ name, email, password }: ICreateUserDTO): Promise<User> {
@@ -32,6 +39,8 @@ export default class CreateUserService {
     const user = await this.usersRepository.create({
       name, email, password: hashPassword
     })
+
+    await this.cacheProvider.removePrefix('providers-list')
 
     return user
   }
