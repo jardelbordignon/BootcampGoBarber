@@ -27,7 +27,7 @@ export default class RedisCacheProvider implements ICacheProvider {
 
 
   public async remove(key: string): Promise<void> {
-
+    await this.redis.del(key)
   }
 
 

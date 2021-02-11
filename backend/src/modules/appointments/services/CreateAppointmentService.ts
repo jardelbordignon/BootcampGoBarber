@@ -1,6 +1,8 @@
 import { startOfHour, isBefore, getHours, format } from 'date-fns'
 import { injectable, inject } from 'tsyringe'
 
+import { DI_CACHE_PROVIDER } from '@/shared/providers/CacheProvider'
+import ICacheProvider from '@/shared/providers/CacheProvider/models/ICacheProvider'
 import { DI_APPOINTMENTS_REPOSITORY, DI_NOTIFICATIONS_REPOSITORY, DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import INotificationsRepository from '@/modules/notifications/repositories/INotificationsRepository'
@@ -20,7 +22,10 @@ export default class CreateAppointmentService {
     private usersRepository: IUsersRepository,
 
     @inject(DI_NOTIFICATIONS_REPOSITORY)
-    private notificationsRepository: INotificationsRepository
+    private notificationsRepository: INotificationsRepository,
+
+    @inject(DI_CACHE_PROVIDER)
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ provider_id, client_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
@@ -52,12 +57,16 @@ export default class CreateAppointmentService {
     })
 
     const client = await this.usersRepository.findById(client_id)
-    const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm'h'")
+    const dateFormatted = format(appointmentDate, "dd/MMM/yyyy 'às' HH:mm'h'")
 
     await this.notificationsRepository.create({
       recipient_id: provider_id,
       content: `Agendamento com ${client?.name} para dia ${dateFormatted}`
     })
+
+    await this.cacheProvider.remove(
+      `provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-d')}`
+    )
 
     return appointment
   }
