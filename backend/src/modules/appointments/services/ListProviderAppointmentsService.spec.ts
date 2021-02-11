@@ -3,16 +3,21 @@ import AppError from '@/shared/errors/AppError'
 
 import FakeAppointmentsRepository from '@/modules/appointments/repositories/fakes/FakeAppointmentsRepository'
 import ListProviderAppointmentsService from './ListProviderAppointmentsService'
+import FakeCacheProvider from '@/shared/providers/CacheProvider/fakes/FakeCacheProvider'
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository
 let listProviderAppointmentsService: ListProviderAppointmentsService
+let fakeCacheProvider: FakeCacheProvider
 
 describe('ListProviderAppointmentsService', () => {
 
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository()
+    fakeCacheProvider = new FakeCacheProvider()
+
     listProviderAppointmentsService = new ListProviderAppointmentsService(
-      fakeAppointmentsRepository
+      fakeAppointmentsRepository,
+      fakeCacheProvider
     )
 
     // Altera o funcionamento padrão do método Date retorando 2021/jan/1 11:00:00
