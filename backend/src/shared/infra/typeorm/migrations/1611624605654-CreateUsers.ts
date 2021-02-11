@@ -67,7 +67,8 @@ export class CreateUsers1611624605654 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('appointments', 'appointmentsFK')
+    await queryRunner.dropForeignKey('appointments', 'ClientFK')
+    await queryRunner.dropForeignKey('appointments', 'ProviderFK')
     await queryRunner.dropTable('users')
   }
 
