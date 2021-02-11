@@ -15,3 +15,5 @@ backend/ormconfig.json
 backend/tmp/*
 !backend/tmp/uploads/base.css
 backend/*.lock
+
+debug.log

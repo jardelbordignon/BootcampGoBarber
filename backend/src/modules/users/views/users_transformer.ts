@@ -23,7 +23,6 @@ switch (storageDriver) {
 export default {
 
   renderOne(user: User) {
-    console.log('uploadConfig.driver', storageDriver)
     return {
       id: user.id,
       name: user.name,
