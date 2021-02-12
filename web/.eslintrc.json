@@ -22,6 +22,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+      "comma-dangle": ["error", "only-multiline"],
       "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",

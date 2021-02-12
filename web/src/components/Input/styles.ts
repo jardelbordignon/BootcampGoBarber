@@ -13,13 +13,23 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   background: ${theme.colors.secondary};
 
-  border: 2px solid transparent;
+  border-width: 2px;
+  border-style: solid;
   border-radius: 10px;
   padding: 0 16px;
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: relative;
+
+  border-color: ${props =>
+    props.isFocused
+    ? theme.colors.primary
+    : props.isErrored
+    ? theme.colors.danger
+    : theme.colors.secondary
+  };
 
   & + div {
     margin-top: 8px;
@@ -32,15 +42,9 @@ export const Container = styled.div<ContainerProps>`
     };
   }
 
-  border-color: ${props =>
-    props.isFocused
-    ? theme.colors.primary
-    : props.isErrored
-    ? theme.colors.danger
-    : 'transparent'
-  };
-
   input {
+    border:0;
+    padding: 15px 8px 15px 15px;
     color: ${theme.colors.white};
     background: transparent;
 

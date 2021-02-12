@@ -31,13 +31,6 @@ export default createGlobalStyle`
     font-weight: 500;
   }
 
-  input {
-    border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 16px;
-    width: 100%;
-  }
-
   a {
     display: flex;
     justify-content: center;

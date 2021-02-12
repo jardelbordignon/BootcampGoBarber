@@ -6,6 +6,7 @@ export const Container = styled.div`
   position: relative;
 
   span.title {
+    z-index: 3;
     width: 180px;
     background: ${theme.colors.primary};
     color: ${theme.colors.background};
