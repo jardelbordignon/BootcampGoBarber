@@ -3,6 +3,7 @@
     "primary": "#FF9000",
     "secondary": "#232129",
     "background": "#312E38",
-    "white": "#F4EDE8"
+    "white": "#F4EDE8",
+    "danger": "#c53030"
   }
 }
