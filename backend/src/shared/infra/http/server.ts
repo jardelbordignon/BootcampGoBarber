@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import * as dotenv from 'dotenv'
-
 import express, { Request, Response, NextFunction } from 'express'
+import cors from 'cors'
 import { errors } from 'celebrate'
 import 'express-async-errors'
 
@@ -16,6 +16,8 @@ import '../../DependencyInjectionContainer'
 dotenv.config()
 
 const app = express()
+
+app.use(cors()) // acesso via browser
 
 app.use(rateLimiter)
 
