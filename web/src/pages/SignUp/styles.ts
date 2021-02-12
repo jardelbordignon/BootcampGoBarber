@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { shade } from 'polished'
 
 import theme from '../../styles/theme.json'
-import bgSignin from '../../assets/bg_signin.png'
+import bgSignup from '../../assets/bg_signup.png'
 
 export const Container = styled.div`
   height: 100vh;
@@ -28,24 +28,16 @@ export const Content = styled.div`
     h1 {
       margin: 24px;
     }
-
-    a {
-      color: ${theme.colors.white};
-      margin-top: 24px;
-
-      &:hover {
-        color: ${shade(0.2, theme.colors.white)}
-      }
-    }
   }
 
   > a {
-    color: ${theme.colors.primary};
+    color: ${theme.colors.white};
     > svg {
       margin-right: 10px;
     }
+
     &:hover {
-      color: ${shade(0.2, theme.colors.primary)}
+      color: ${shade(0.2, theme.colors.white)}
     }
   }
 
@@ -53,6 +45,6 @@ export const Content = styled.div`
 
 export const Background = styled.div`
   flex: 1;
-  background: url(${bgSignin}) no-repeat center;
+  background: url(${bgSignup}) no-repeat center;
   background-size: cover; // imagem em todo o tamanho
 `
