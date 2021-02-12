@@ -22,7 +22,8 @@ export const Content = styled.div`
 
   form {
     margin: 80px 0;
-    max-width: 340px;
+    width: 100%;
+    max-width: 320px;
     text-align: center;
 
     h1 {
@@ -44,11 +45,11 @@ export const Content = styled.div`
     > svg {
       margin-right: 10px;
     }
+
     &:hover {
       color: ${shade(0.2, theme.colors.primary)}
     }
   }
-
 `
 
 export const Background = styled.div`

@@ -27,7 +27,7 @@ const SignUp: React.FC = () => {
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
-        password: Yup.string().min(6, 'Senha no mínimo 6 caracteres')
+        password: Yup.string().min(6, 'Senha no mínimo 6 caracteres'),
       })
 
       await schema.validate(data, { abortEarly: false })
@@ -44,18 +44,21 @@ const SignUp: React.FC = () => {
       <Background />
 
       <Content>
-        <img src={logo} alt='GoBarber' />
+        <img src={logo} alt="GoBarber" />
 
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Faça seu cadastro</h1>
 
-          <Input name='name' icon={FiUser} placeholder='Nome' />
-          <Input name='email' icon={FiMail} placeholder='E-mail' />
-          <Input name='password' icon={FiLock} placeholder='Senha' type='password' />
+          <Input name="name" icon={FiUser} placeholder="Nome" />
+          <Input name="email" icon={FiMail} placeholder="E-mail" />
+          <Input name="password" icon={FiLock} placeholder="Senha" type="password" />
           <Button>Entrar</Button>
         </Form>
 
-        <a href='register'> <FiArrowLeft /> Voltar para o login</a>
+        <a href="register">
+          {' '}
+          <FiArrowLeft /> Voltar para o login
+        </a>
       </Content>
     </Container>
   )
