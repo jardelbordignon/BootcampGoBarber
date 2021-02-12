@@ -1,11 +1,13 @@
 import styled, { css } from 'styled-components'
 import { shade } from 'polished'
 
+import ToolTip from '../ToolTip'
 import theme from '../../styles/theme.json'
 
 interface ContainerProps {
   isFocused: boolean
   isFilled: boolean
+  isErrored: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -30,30 +32,53 @@ export const Container = styled.div<ContainerProps>`
     };
   }
 
-  ${props => props.isFocused && css`
-    border-color: ${theme.colors.primary};
-  `};
+  border-color: ${props =>
+    props.isFocused
+    ? theme.colors.primary
+    : props.isErrored
+    ? theme.colors.danger
+    : 'transparent'
+  };
 
   input {
     color: ${theme.colors.white};
     background: transparent;
 
     &::placeholder { color: ${shade(0.2, theme.colors.white)}; }
+    z-index: 2;
   }
 
-  span {
+  span.placeholder {
     color: ${shade(0.2, theme.colors.white)};
     display: block;
     position: absolute;
 
-    transition: all 0.2s;
+    transition: all 0.3s;
     left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
 
     ${props => (props.isFocused || props.isFilled) && css`
-      top: 4px;
+      top: 10px;
       left: 35px;
       font-size: 1rem;
     `};
+  }
+`
+
+export const Error = styled(ToolTip)`
+  svg {
+    margin: 0;
+  }
+
+  // sobrescrevendo as cores do ToolTip
+  span.title {
+    background: ${theme.colors.danger};
+    color: ${theme.colors.white};
+
+    &::before {
+      border-color: ${theme.colors.danger} transparent;
+    }
   }
 
 
