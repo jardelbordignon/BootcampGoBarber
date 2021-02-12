@@ -29,27 +29,6 @@ export const Content = styled.div`
       margin: 24px;
     }
 
-    input {
-      background: ${theme.colors.secondary};
-      color: ${theme.colors.white};
-
-      //&::placeholder { color: ${theme.colors.primary}; }
-
-      & + input {
-        margin-top: 8px;
-      }
-    }
-
-    button {
-      background: ${theme.colors.primary};
-      color: ${theme.colors.background};
-      margin-top: 16px;
-
-      &:hover {
-        background: ${shade(0.2, theme.colors.primary)};
-      }
-    }
-
     a {
       color: ${theme.colors.white};
       margin-top: 24px;

@@ -25,6 +25,7 @@
       "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
+      "react/prop-types": "off",
       "react/jsx-filename-extension": [
         1,
         {
