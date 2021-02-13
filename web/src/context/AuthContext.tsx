@@ -1,4 +1,4 @@
-import { createContext, useCallback } from 'react'
+import { createContext, useCallback, useState } from 'react'
 
 import api from '../services/api'
 
@@ -8,18 +8,34 @@ export interface SignInCredentials {
 }
 
 interface IAuthContext {
-  name: string
+  user: { [key: string]: any }
   signIn(credentials: SignInCredentials): Promise<void>
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext)
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const [authData, setAuthData] = useState(() => {
+    const token = localStorage.getItem('@GoBarber:token')
+    const user = localStorage.getItem('@GoBarber:user')
+
+    if (token && user) {
+      return { token, user: JSON.parse(user) }
+    }
+
+    return { token: '', user: {} }
+  })
+
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post('sessions', { email, password })
 
-    console.log(response.data)
+    const { token, user } = response.data
+
+    localStorage.setItem('@GoBarber:token', token)
+    localStorage.setItem('@GoBarber:user', JSON.stringify(user))
+
+    setAuthData({ token, user })
   }, [])
 
-  return <AuthContext.Provider value={{ name: 'Jardel', signIn }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ signIn, user: authData.user }}>{children}</AuthContext.Provider>
 }
