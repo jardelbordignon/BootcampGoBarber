@@ -47,6 +47,7 @@ export const Container = styled.div<ContainerProps>`
     padding: 15px 8px 15px 15px;
     color: ${theme.colors.white};
     background: transparent;
+    width: 100%;
 
     &::placeholder { color: ${shade(0.2, theme.colors.white)}; }
     z-index: 2;
