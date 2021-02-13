@@ -41,9 +41,6 @@ export default createGlobalStyle`
 
   button {
     border: 0;
-    border-radius: 10px;
-    padding: 16px;
-    width: 100%;
     transition: all 0.2s;
     cursor: pointer;
   }
