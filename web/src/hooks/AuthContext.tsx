@@ -1,18 +1,19 @@
-import { createContext, useCallback, useState } from 'react'
+import { createContext, useCallback, useState, useContext } from 'react'
 
 import api from '../services/api'
 
-export interface SignInCredentials {
+export interface ISignInCredentials {
   email: string
   password: string
 }
 
 interface IAuthContext {
   user: { [key: string]: any }
-  signIn(credentials: SignInCredentials): Promise<void>
+  signIn(credentials: ISignInCredentials): Promise<void>
+  signOut(): void
 }
 
-export const AuthContext = createContext<IAuthContext>({} as IAuthContext)
+const AuthContext = createContext<IAuthContext>({} as IAuthContext)
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [authData, setAuthData] = useState(() => {
@@ -37,5 +38,21 @@ export const AuthProvider: React.FC = ({ children }) => {
     setAuthData({ token, user })
   }, [])
 
-  return <AuthContext.Provider value={{ signIn, user: authData.user }}>{children}</AuthContext.Provider>
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@GoBarber:token')
+    localStorage.removeItem('@GoBarber:user')
+    setAuthData({ token: '', user: {} })
+  }, [])
+
+  return <AuthContext.Provider value={{ signIn, signOut, user: authData.user }}>{children}</AuthContext.Provider>
+}
+
+export function useAuth(): IAuthContext {
+  const context = useContext(AuthContext)
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+
+  return context
 }

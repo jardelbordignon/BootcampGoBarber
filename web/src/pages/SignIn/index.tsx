@@ -1,10 +1,10 @@
-import { useCallback, useRef, useContext } from 'react'
+import { useCallback, useRef } from 'react'
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
 
-import { AuthContext, SignInCredentials } from '../../context/AuthContext'
+import { useAuth, ISignInCredentials } from '../../hooks/AuthContext'
 import getValidationsErrors from '../../utils/getValidationsErrors'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -16,10 +16,10 @@ import { Container, Content, Background } from './styles'
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
 
-  const { signIn } = useContext(AuthContext)
+  const { signIn } = useAuth()
 
   const handleSubmit = useCallback(
-    async (data: SignInCredentials) => {
+    async (data: ISignInCredentials) => {
       try {
         formRef.current?.setErrors({})
         const schema = Yup.object().shape({
@@ -32,7 +32,6 @@ const SignIn: React.FC = () => {
         signIn(data)
       } catch (error) {
         console.log(error)
-
         const errors = getValidationsErrors(error)
         formRef.current?.setErrors(errors)
       }
