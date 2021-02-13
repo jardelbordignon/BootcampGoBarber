@@ -1,10 +1,20 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { shade } from 'polished'
 
 import theme from '../../styles/theme.json'
 import bgSignin from '../../assets/bg_signin.png'
 
+const appearFromLeft = keyframes`
+  from { transform: translate(-50px, 50px); }
+  to { transform: translate(0, 0); }
+`
+const appearWithFade = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`
+
 export const Container = styled.div`
+  animation: ${appearWithFade} 1.5s;
   height: 100vh;
 
   display: flex;
@@ -13,15 +23,24 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 
   width: 100%;
   max-width: 700px;
+`
+
+export const AnimatedContainer = styled.div`
+  animation: ${appearFromLeft} 1s;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 
   form {
-    margin: 80px 0;
+    margin: 40px 0;
     width: 100%;
     max-width: 320px;
     text-align: center;

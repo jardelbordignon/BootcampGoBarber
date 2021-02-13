@@ -1,10 +1,20 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { shade } from 'polished'
 
 import theme from '../../styles/theme.json'
 import bgSignup from '../../assets/bg_signup.png'
 
+const appearFromRight = keyframes`
+  from { transform: translate(50px, -50px); }
+  to { transform: translate(0, 0); }
+`
+const appearWithFade = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`
+
 export const Container = styled.div`
+  animation: ${appearWithFade} 1.5s;
   height: 100vh;
 
   display: flex;
@@ -13,15 +23,23 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 
   width: 100%;
   max-width: 700px;
+`
+
+export const AnimatedContainer = styled.div`
+  animation: ${appearFromRight} 1s;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   form {
-    margin: 80px 0;
+    margin: 40px 0;
     width: 100%;
     max-width: 320px;
     text-align: center;
@@ -29,9 +47,30 @@ export const Content = styled.div`
     h1 {
       margin: 24px;
     }
+
+    a {
+      color: ${theme.colors.white};
+      margin-top: 24px;
+
+      &:hover {
+        color: ${shade(0.2, theme.colors.white)}
+      }
+    }
   }
 
   > a {
+    color: ${theme.colors.primary};
+    > svg {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      color: ${shade(0.2, theme.colors.primary)}
+    }
+  }
+`
+
+/* > a {
     color: ${theme.colors.white};
     > svg {
       margin-right: 10px;
@@ -40,9 +79,7 @@ export const Content = styled.div`
     &:hover {
       color: ${shade(0.2, theme.colors.white)}
     }
-  }
-
-`
+  } */
 
 export const Background = styled.div`
   flex: 1;

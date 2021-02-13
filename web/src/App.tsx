@@ -1,13 +1,13 @@
 import GlobalStyles from './styles/global'
 
-import SignIn from './pages/SignIn'
 import AppProviders from './hooks'
+import Routes from './routes'
 
 const App: React.FC = () => {
   return (
     <>
       <AppProviders>
-        <SignIn />
+        <Routes />
       </AppProviders>
 
       <GlobalStyles />
