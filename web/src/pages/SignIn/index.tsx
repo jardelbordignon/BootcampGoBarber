@@ -3,6 +3,7 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
+import { Link } from 'react-router-dom'
 
 import { useAuth, ISignInCredentials } from '../../hooks/auth'
 import { useToasts } from '../../hooks/toasts'
@@ -12,7 +13,7 @@ import Input from '../../components/Input'
 
 import logo from '../../assets/logo.svg'
 
-import { Container, Content, Background } from './styles'
+import { AnimatedContainer, Container, Content, Background } from './styles'
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
@@ -39,6 +40,7 @@ const SignIn: React.FC = () => {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationsErrors(error)
           formRef.current?.setErrors(errors)
+          return
         }
         // trigger a toast
         addToast({
@@ -54,22 +56,23 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <Content>
-        <img src={logo} alt="GoBarber" />
+        <AnimatedContainer>
+          <img src={logo} alt="GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu login</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu login</h1>
 
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
-          <Input name="password" icon={FiLock} placeholder="Senha" type="password" />
-          <Button>Entrar</Button>
+            <Input name="email" icon={FiMail} placeholder="E-mail" />
+            <Input name="password" icon={FiLock} placeholder="Senha" type="password" />
+            <Button>Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
+            <Link to="forgot">Esqueci minha senha</Link>
+          </Form>
 
-        <a href="register">
-          {' '}
-          <FiLogIn /> Criar conta
-        </a>
+          <Link to="signup">
+            <FiLogIn /> Criar conta
+          </Link>
+        </AnimatedContainer>
       </Content>
 
       <Background />

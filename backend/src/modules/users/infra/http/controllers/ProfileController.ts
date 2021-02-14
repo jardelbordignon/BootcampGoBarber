@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { container as dependencyInjector } from 'tsyringe'
+import { classToClass } from 'class-transformer'
 
-import usersTransformer from '@/modules/users/views/users_transformer'
 import ShowProfileService from '@/modules/users/services/ShowProfileService'
 import UpdateProfileService from '@/modules/users/services/UpdateProfileService'
 
@@ -14,7 +14,7 @@ export default class ProfileController {
 
     const user = await showProfileService.execute({ user_id })
 
-    return response.json(usersTransformer.renderOne(user))
+    return response.json(classToClass(user))
   }
 
 
@@ -28,7 +28,7 @@ export default class ProfileController {
       user_id, name, email, old_password, password
     })
 
-    return response.json(usersTransformer.renderOne(user))
+    return response.json(classToClass(user))
   }
 
 }

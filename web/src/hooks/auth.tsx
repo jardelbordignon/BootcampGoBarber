@@ -24,7 +24,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       return { token, user: JSON.parse(user) }
     }
 
-    return { token: '', user: {} }
+    return {}
   })
 
   const signIn = useCallback(async ({ email, password }) => {
@@ -41,7 +41,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(() => {
     localStorage.removeItem('@GoBarber:token')
     localStorage.removeItem('@GoBarber:user')
-    setAuthData({ token: '', user: {} })
+    setAuthData({})
   }, [])
 
   return <AuthContext.Provider value={{ signIn, signOut, user: authData.user }}>{children}</AuthContext.Provider>
