@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { container as dependencyInjector } from 'tsyringe'
+import { classToClass } from 'class-transformer'
 
-import usersTransformer from '@/modules/users/views/users_transformer'
 import CreateUserService from '@/modules/users/services/CreateUserService'
 
 export default class UsersController {
@@ -13,7 +13,7 @@ export default class UsersController {
 
     const user = await createUserService.execute({ name, email, password })
 
-    return response.json(usersTransformer.renderOne(user))
+    return response.json(classToClass(user))
   }
 
 }
