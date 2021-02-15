@@ -50,7 +50,7 @@ export default class SendForgotPasswordEmailService {
       templateData: {
         variables: {
           name: user.name,
-          link: `${appWebUrl}/reset_password?token=${token}`
+          link: `${appWebUrl}/password/reset?token=${token}`
         },
         file: forgotPasswordTemplate
       }

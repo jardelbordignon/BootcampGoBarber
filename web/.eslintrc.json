@@ -22,6 +22,8 @@
         "@typescript-eslint"
     ],
     "rules": {
+      "camelcase": "off",
+      "@typescript-eslint/camelcase": "off",
       "comma-dangle": ["error", "only-multiline"],
       "multiline-ternary": "off",
       "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
