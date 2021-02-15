@@ -2,13 +2,14 @@ import { injectable, inject } from 'tsyringe'
 import path from 'path'
 
 import { DI_USERS_REPOSITORY, DI_USER_TOKENS_REPOSITORY} from '@/shared/DependencyInjectionContainer'
-import { DI_MAIL_PROVIDER } from '@/shared/providers'
+
 
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
 import IUserTokensRepository from '@/modules/users/repositories/IUserTokensRepository'
 import IMailProvider from '@/shared/providers/MailProvider/models/IMailProvider'
 import AppError from '@/shared/errors/AppError'
 import { appWebUrl } from '@/config/dotenv'
+import { DI_MAIL_PROVIDER } from '@/shared/providers/MailProvider'
 
 interface IRequest {
   email: string

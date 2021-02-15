@@ -5,8 +5,8 @@ export const DI_NOTIFICATIONS_REPOSITORY = 'DI_NOTIFICATIONS_REPOSITORY'
 
 import { container as dependencyInjector } from 'tsyringe'
 
-import '@/modules/users/providers'
 import '@/shared/providers'
+import '@/modules/users/providers'
 
 import IAppointmentsRepository from '@/modules/appointments/repositories/IAppointmentsRepository'
 import AppointmentsRepository from '@/modules/appointments/infra/typeorm/repositories/AppointmentsRepository'
