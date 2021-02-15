@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { Exclude } from 'class-transformer'
 
 import Defaults from '@/shared/entities/Defaults'
 import User from '@/modules/users/infra/typeorm/entities/User'
@@ -14,6 +15,7 @@ export default class Appointment extends Defaults {
   provider: User
 
   @Column()
+  @Exclude()
   client_id: string
 
   @ManyToOne(() => User) // many appointments to one client

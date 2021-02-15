@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe'
+import { classToClass } from 'class-transformer'
 
 import { DI_CACHE_PROVIDER } from '@/shared/providers/CacheProvider'
 import ICacheProvider from '@/shared/providers/CacheProvider/models/ICacheProvider'
@@ -35,7 +36,7 @@ export default class ListProviderAppointmentsService {
         provider_id, day, month, year
       })
 
-      await this.cacheProvider.set(cacheKey, appointments)
+      await this.cacheProvider.set(cacheKey, classToClass(appointments))
     }
 
     return appointments
