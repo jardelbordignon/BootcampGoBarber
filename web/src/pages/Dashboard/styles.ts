@@ -137,6 +137,60 @@ export const NextAppointment = styled.div`
   }
 `
 
+export const Session = styled.aside`
+  margin-top: 48px;
+  color: ${shade(0.2, theme.colors.white)};
+
+  > strong {
+    display: block;
+    font-size: 2rem;
+    line-height: 26px;
+    border-bottom: 1px solid ${theme.colors.secondary};
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+`
+
+export const Appointment = styled.aside`
+  display: flex;
+  align-items: space-between;
+
+  & + aside {
+    margin-top: 16px;
+  }
+
+  > span {
+    display: flex;
+    align-items: center;
+    padding-right: 26px;
+    color: ${shade(0.2, theme.colors.white)};
+    > svg {
+      font-size: 24px;
+      margin-right: 10px;
+      color: ${theme.colors.primary};
+    }
+  }
+
+  > div {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: ${theme.colors.secondary};
+
+    > img {
+      height: 56px;
+      min-width: 56px;
+      border-radius: 50%;
+    }
+
+    strong {
+
+    }
+  }
+`
+
 export const Calendar = styled.aside`
   width: 380px;
 `
