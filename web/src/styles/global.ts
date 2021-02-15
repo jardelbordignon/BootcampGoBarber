@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 import theme from './theme.json'
 
@@ -44,4 +44,39 @@ export default createGlobalStyle`
     transition: all 0.2s;
     cursor: pointer;
   }
+`
+
+interface DivPros {
+  flex?: number;
+  align?: string // 'top' | 'bottom' | 'right' | 'left' | 'center'
+  justify?: string
+  column?: boolean
+  width?: string
+  height?: string
+  padding?: string
+  margin?: string
+  position?: string
+  top?: number
+  zIndex?: number
+
+  background?: 'primary' | 'secondary' | 'background' | 'white' | 'danger'
+}
+
+export const Div = styled.div<DivPros>`
+  display: flex;
+  align-items: ${props => props.align || 'center'};
+  justify-content: ${props => props.justify || 'center'};
+  flex-direction: ${props => props.column ? 'column' : 'row'};
+
+  max-width: 100%;
+  width: ${props => props.width || '100%'};
+  max-height: 100%;
+  height: ${props => props.height ? props.height : 'auto'};
+  padding: ${props => props.padding || '0'};
+  margin: ${props => props.margin || 'auto'};
+  position: ${props => props.position || 'relative'};
+  top: ${props => props.top || 0}px;
+  z-index: ${props => props.zIndex || 1};
+
+  background-color: ${props => props.background ? theme.colors[props.background] : 'transparent'};
 `

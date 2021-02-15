@@ -7,8 +7,14 @@ export interface ISignInCredentials {
   password: string
 }
 
+interface IUser {
+  id: string
+  name: string
+  avatar_url: string
+}
+
 interface IAuthContext {
-  user: { [key: string]: any }
+  user: IUser
   signIn(credentials: ISignInCredentials): Promise<void>
   signOut(): void
 }
