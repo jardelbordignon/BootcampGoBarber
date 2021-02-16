@@ -1,5 +1,5 @@
-import { useCallback, useRef } from 'react'
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi'
+import { useCallback, useRef, useState } from 'react'
+import { FiLogIn, FiMail, FiLock, FiUser } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
@@ -16,6 +16,7 @@ import logo from '../../assets/logo.svg'
 import { AnimatedContainer, Container, Content, Background } from './styles'
 
 const SignIn: React.FC = () => {
+  const [loading, setLoading] = useState(false)
   const formRef = useRef<FormHandles>(null)
 
   const { signIn } = useAuth()
@@ -31,6 +32,8 @@ const SignIn: React.FC = () => {
         })
 
         await schema.validate(data, { abortEarly: false })
+
+        setLoading(true)
 
         await signIn({
           email: data.email,
@@ -48,6 +51,8 @@ const SignIn: React.FC = () => {
           title: 'Erro na autenticação',
           description: 'Ocorreu um erro ao fazer login, confira suas credenciais',
         })
+      } finally {
+        setLoading(false)
       }
     },
     [signIn, addToast]
@@ -64,13 +69,15 @@ const SignIn: React.FC = () => {
 
             <Input name="email" icon={FiMail} placeholder="E-mail" />
             <Input name="password" icon={FiLock} placeholder="Senha" type="password" />
-            <Button>Entrar</Button>
+            <Button icon={FiLogIn} loading={loading}>
+              Entrar
+            </Button>
 
             <Link to="/password/forgot">Esqueci minha senha</Link>
           </Form>
 
           <Link to="/signup">
-            <FiLogIn /> Criar conta
+            <FiUser /> Criar conta
           </Link>
         </AnimatedContainer>
       </Content>

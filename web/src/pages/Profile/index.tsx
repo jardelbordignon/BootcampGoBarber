@@ -1,5 +1,5 @@
-import { useCallback, useRef } from 'react'
-import { FiArrowLeft, FiMail, FiLock, FiUser, FiCamera } from 'react-icons/fi'
+import { useCallback, useRef, useState, ChangeEvent } from 'react'
+import { FiArrowLeft, FiMail, FiLock, FiUser, FiCamera, FiCheck } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
@@ -21,10 +21,11 @@ interface IProfile {
 }
 
 const Profile: React.FC = () => {
+  const [loading, setLoading] = useState(false)
   const formRef = useRef<FormHandles>(null)
   const { addToast } = useToasts()
   const history = useHistory()
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
 
   const handleSubmit = useCallback(
     async (data: IProfile) => {
@@ -38,6 +39,7 @@ const Profile: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false })
 
+        setLoading(true)
         await api.post('/users', data)
 
         addToast({
@@ -59,9 +61,32 @@ const Profile: React.FC = () => {
           title: 'Erro no cadastro',
           description: 'Ocorreu um erro ao fazer seu cadastro. Tente novamente',
         })
+      } finally {
+        setLoading(false)
       }
     },
     [addToast, history]
+  )
+
+  const onChangeAvatarHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const data = new FormData()
+
+        data.append('avatar', e.target.files[0])
+
+        setLoading(true)
+        api.patch('/users/avatar', data).then((response) => {
+          updateUser(response.data)
+          addToast({
+            type: 'success',
+            title: 'Avatar atualizado!',
+          })
+          setLoading(false)
+        })
+      }
+    },
+    [updateUser, addToast]
   )
 
   return (
@@ -77,9 +102,10 @@ const Profile: React.FC = () => {
         <AnimatedContainer>
           <AvatarInput>
             {user.avatar_url ? <img src={user.avatar_url} alt={user.name} /> : <FiUser />}
-            <button>
+            <label>
               <FiCamera />
-            </button>
+              <input type="file" name="avatar" id="avatar" onChange={onChangeAvatarHandler} />
+            </label>
           </AvatarInput>
 
           <Form ref={formRef} initialData={{ name: user.name, email: user.email }} onSubmit={handleSubmit}>
@@ -90,7 +116,9 @@ const Profile: React.FC = () => {
             <Input name="old_password" icon={FiLock} placeholder="Senha atual" type="password" />
             <Input name="password" icon={FiLock} placeholder="Nova senha" type="password" />
             <Input name="confirm_password" icon={FiLock} placeholder="Confirmar senha" type="password" />
-            <Button>Salvar alterações</Button>
+            <Button icon={FiCheck} loading={loading}>
+              Salvar alterações
+            </Button>
           </Form>
         </AnimatedContainer>
       </Content>

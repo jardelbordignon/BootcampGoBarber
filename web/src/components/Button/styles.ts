@@ -5,17 +5,22 @@ import theme from '../../styles/theme.json'
 
 export const Container = styled.button`
   background: ${theme.colors.primary};
-  color: ${theme.colors.background};
+  color: ${theme.colors.white};
   margin-top: 16px;
   border-radius: 10px;
   padding: 16px;
   width: 100%;
   position: relative;
 
+  > svg {
+    position: absolute;
+    left: 18px;
+  }
+
   > div {
     position: absolute;
     top: 0;
-    left: 20px;
+    right: 50px;
 
     > div.loading {
       display: inline-block;
@@ -24,7 +29,7 @@ export const Container = styled.button`
       > div {
         display: inline-block;
         position: absolute;
-        left: 0;
+        right: 0;
         width: 10px;
         background: ${theme.colors.background};
         animation: loading 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
