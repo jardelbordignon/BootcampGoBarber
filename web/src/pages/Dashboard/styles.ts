@@ -149,6 +149,10 @@ export const Session = styled.aside`
     padding-bottom: 16px;
     margin-bottom: 16px;
   }
+
+  > p {
+    color: ${shade(0.2, theme.colors.white)};
+  }
 `
 
 export const Appointment = styled.aside`
@@ -186,7 +190,8 @@ export const Appointment = styled.aside`
     }
 
     strong {
-
+      font-size: 20px;
+      margin-left: 16px;
     }
   }
 `
