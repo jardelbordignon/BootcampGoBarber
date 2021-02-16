@@ -23,6 +23,7 @@
     ],
     "rules": {
       "camelcase": "off",
+      "import/no-duplicates": "off",
       "@typescript-eslint/camelcase": "off",
       "comma-dangle": ["error", "only-multiline"],
       "multiline-ternary": "off",
