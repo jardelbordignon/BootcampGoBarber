@@ -52,8 +52,11 @@ export const Profile = styled.div`
     flex-direction: column;
     margin-left: 16px;
     line-height: 24px;
-    > span { color: ${shade(0.2, theme.colors.white)} }
-    > strong { color: ${theme.colors.primary} }
+    > span { color: ${shade(0.2, theme.colors.white)} };
+    > a {
+      color: ${theme.colors.primary};
+      &:hover { opacity: 0.8 }
+    }
   }
 `
 

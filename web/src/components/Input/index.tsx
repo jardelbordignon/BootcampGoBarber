@@ -31,30 +31,31 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      path: 'value'
+      path: 'value',
     })
+    setIsFilled(!!inputRef.current?.value)
   }, [fieldName, registerField])
 
   return (
     <Container isErrored={!!error} isFocused={isFocused} isFilled={isFilled}>
-      { Icon && <Icon size={20} /> }
+      {Icon && <Icon size={20} />}
 
       <input
         defaultValue={defaultValue}
         ref={inputRef}
         {...rest}
-        placeholder=''
+        placeholder=""
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
       />
 
-      { error &&
+      {error && (
         <Error title={error}>
           <FiAlertCircle size={20} color={theme.colors.danger} />
         </Error>
-      }
+      )}
 
-      { rest.placeholder && <span className='placeholder'>{rest.placeholder}</span> }
+      {rest.placeholder && <span className="placeholder">{rest.placeholder}</span>}
     </Container>
   )
 }

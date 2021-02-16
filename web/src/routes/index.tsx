@@ -4,9 +4,11 @@ import ConditionedRoute from '../routes/ConditionedRoute'
 
 import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
-import Dashboard from '../pages/Dashboard'
 import Forgot from '../pages/password/Forgot'
 import Reset from '../pages/password/Reset'
+
+import Dashboard from '../pages/Dashboard'
+import Profile from '../pages/Profile'
 
 const Routes: React.FC = () => (
   <BrowserRouter>
@@ -17,6 +19,7 @@ const Routes: React.FC = () => (
       <ConditionedRoute path="/password/reset" component={Reset} />
 
       <ConditionedRoute path="/dash" component={Dashboard} isPrivate />
+      <ConditionedRoute path="/profile" component={Profile} isPrivate />
     </Switch>
   </BrowserRouter>
 )
