@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 
 import { Box } from '../../styles'
 
-const SignIn = () => {
+const SignUp = () => {
   return (
     <Box>
       <Text>SignIn</Text>
@@ -11,4 +11,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignUp
