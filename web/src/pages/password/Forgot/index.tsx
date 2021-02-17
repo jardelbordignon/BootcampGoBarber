@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { FiArrowLeft, FiMail } from 'react-icons/fi'
+import { FiArrowLeft, FiMail, FiCheck } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
@@ -76,7 +76,9 @@ const ForgotPassword: React.FC = () => {
             <h1>Recuperar senha</h1>
 
             <Input name="email" icon={FiMail} placeholder="E-mail" />
-            <Button loading={loading}>Recuperar</Button>
+            <Button icon={FiCheck} loading={loading}>
+              Recuperar
+            </Button>
           </Form>
 
           <Link to="/">

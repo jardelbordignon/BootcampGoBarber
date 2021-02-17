@@ -1,5 +1,4 @@
 import { injectable, inject } from 'tsyringe'
-import { classToClass } from 'class-transformer'
 
 import { DI_STORAGE_PROVIDER } from '@/shared/providers/StorageProvider'
 import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
@@ -43,7 +42,7 @@ export default class UpdateUserAvatarService {
 
     await this.usersRepository.save(user)
 
-    return classToClass(user)
+    return user
   }
 
 }

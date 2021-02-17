@@ -1,5 +1,5 @@
-import { useCallback, useRef } from 'react'
-import { FiArrowLeft, FiMail, FiLock, FiUser, FiCamera } from 'react-icons/fi'
+import { useCallback, useRef, useState, ChangeEvent } from 'react'
+import { FiArrowLeft, FiMail, FiLock, FiUser, FiCamera, FiCheck } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
@@ -17,14 +17,17 @@ import { AnimatedContainer, Header, HeaderContent, Container, Content, AvatarInp
 interface IProfile {
   name: string
   email: string
+  old_password: string
   password: string
+  password_confirmation: string
 }
 
 const Profile: React.FC = () => {
+  const [loading, setLoading] = useState(false)
   const formRef = useRef<FormHandles>(null)
   const { addToast } = useToasts()
   const history = useHistory()
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
 
   const handleSubmit = useCallback(
     async (data: IProfile) => {
@@ -33,17 +36,39 @@ const Profile: React.FC = () => {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome é obrigatório'),
           email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
-          password: Yup.string().min(6, 'Senha no mínimo 6 caracteres'),
+          old_password: Yup.string(),
+          password: Yup.string().when('old_password', {
+            is: (val) => !!val.length,
+            then: Yup.string().min(6, 'Senha deve ter 6 dígitos ou mais'),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string()
+            .when('old_password', {
+              is: (val) => !!val.length,
+              then: Yup.string().required('Confirmação é obrigatória'),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('password'), ''], 'Confirmação diferente da senha'),
         })
 
         await schema.validate(data, { abortEarly: false })
 
-        await api.post('/users', data)
+        const { name, email, old_password, password, password_confirmation } = data
+        const formData = {
+          name,
+          email,
+          ...(old_password ? { old_password, password, password_confirmation } : {}),
+        }
+
+        setLoading(true)
+        const response = await api.put('/profile', formData)
+
+        updateUser(response.data)
 
         addToast({
           type: 'success',
-          title: 'Cadastro realizado!',
-          description: 'Faça seu login no GoBarber',
+          title: 'Perfil atualizado!',
+          description: 'Seu perfil foi atualizado com sucesso!',
         })
 
         history.push('/')
@@ -56,12 +81,35 @@ const Profile: React.FC = () => {
         // trigger a toast
         addToast({
           type: 'error',
-          title: 'Erro no cadastro',
-          description: 'Ocorreu um erro ao fazer seu cadastro. Tente novamente',
+          title: 'Erro na atualização',
+          description: 'Ocorreu um erro ao atualizar seu perfil. Tente novamente',
+        })
+      } finally {
+        setLoading(false)
+      }
+    },
+    [addToast, history, updateUser]
+  )
+
+  const onChangeAvatarHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const data = new FormData()
+
+        data.append('avatar', e.target.files[0])
+
+        setLoading(true)
+        api.patch('/users/avatar', data).then((response) => {
+          updateUser(response.data)
+          addToast({
+            type: 'success',
+            title: 'Avatar atualizado!',
+          })
+          setLoading(false)
         })
       }
     },
-    [addToast, history]
+    [updateUser, addToast]
   )
 
   return (
@@ -77,9 +125,10 @@ const Profile: React.FC = () => {
         <AnimatedContainer>
           <AvatarInput>
             {user.avatar_url ? <img src={user.avatar_url} alt={user.name} /> : <FiUser />}
-            <button>
+            <label>
               <FiCamera />
-            </button>
+              <input type="file" name="avatar" id="avatar" onChange={onChangeAvatarHandler} />
+            </label>
           </AvatarInput>
 
           <Form ref={formRef} initialData={{ name: user.name, email: user.email }} onSubmit={handleSubmit}>
@@ -89,8 +138,10 @@ const Profile: React.FC = () => {
             <br />
             <Input name="old_password" icon={FiLock} placeholder="Senha atual" type="password" />
             <Input name="password" icon={FiLock} placeholder="Nova senha" type="password" />
-            <Input name="confirm_password" icon={FiLock} placeholder="Confirmar senha" type="password" />
-            <Button>Salvar alterações</Button>
+            <Input name="password_confirmation" icon={FiLock} placeholder="Confirmar senha" type="password" />
+            <Button icon={FiCheck} loading={loading}>
+              Salvar alterações
+            </Button>
           </Form>
         </AnimatedContainer>
       </Content>

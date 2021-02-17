@@ -93,7 +93,7 @@ export const AvatarInput = styled.div`
     background-color: ${theme.colors.background};
   }
 
-  button {
+  label {
     position: absolute;
     bottom: 10px;
     right: -10px;
@@ -104,6 +104,11 @@ export const AvatarInput = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+
+    > input {
+      display: none;
+    }
     > svg {
       font-size: 20px;
     }

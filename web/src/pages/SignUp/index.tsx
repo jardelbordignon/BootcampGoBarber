@@ -1,5 +1,5 @@
-import { useCallback, useRef } from 'react'
-import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi'
+import { useCallback, useRef, useState } from 'react'
+import { FiArrowLeft, FiMail, FiLock, FiUser, FiCheck } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
@@ -22,6 +22,7 @@ interface ISignUp {
 }
 
 const SignUp: React.FC = () => {
+  const [loading, setLoading] = useState(false)
   const formRef = useRef<FormHandles>(null)
   const { addToast } = useToasts()
   const history = useHistory()
@@ -38,6 +39,7 @@ const SignUp: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false })
 
+        setLoading(true)
         await api.post('/users', data)
 
         addToast({
@@ -59,6 +61,8 @@ const SignUp: React.FC = () => {
           title: 'Erro no cadastro',
           description: 'Ocorreu um erro ao fazer seu cadastro. Tente novamente',
         })
+      } finally {
+        setLoading(false)
       }
     },
     [addToast, history]
@@ -78,7 +82,9 @@ const SignUp: React.FC = () => {
             <Input name="name" icon={FiUser} placeholder="Nome" />
             <Input name="email" icon={FiMail} placeholder="E-mail" />
             <Input name="password" icon={FiLock} placeholder="Senha" type="password" />
-            <Button>Entrar</Button>
+            <Button icon={FiCheck} loading={loading}>
+              Entrar
+            </Button>
           </Form>
 
           <Link to="/">
