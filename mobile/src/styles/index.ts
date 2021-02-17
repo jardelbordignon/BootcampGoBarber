@@ -66,5 +66,5 @@ interface ISpacer {
 }
 export const Spacer = styled.View<ISpacer> `
   width: ${props => props.width || '100%'};
-  height: ${props => props.height || 10}px;
+  height: ${props => props.height || '10px'};
 `
