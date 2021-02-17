@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 import { useNavigation } from '@react-navigation/native'
+import { Form } from '@unform/mobile'
+import { FormHandles } from '@unform/core'
 
 import Button from '../components/Button'
 import Input from '../components/Input'
@@ -11,9 +13,15 @@ import logo from '../assets/logo.png'
 import theme from '../styles/theme.json'
 import { Box, Title, Spacer } from '../styles'
 
+interface ISignIn {
+  email: string
+  password: string
+}
+
 const SignIn = () => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
   const nav = useNavigation()
+  const formRef = useRef<FormHandles>(null)
 
   useEffect(() => {
     //quando abrir o keyborad
@@ -25,6 +33,10 @@ const SignIn = () => {
       keyboardDidShowListener.remove()
       keyboardDidHideListener.remove()
     }
+  }, [])
+
+  const onSubmitHandler = useCallback((data: ISignIn) => {
+    console.log(data)
   }, [])
 
   return (
@@ -42,16 +54,12 @@ const SignIn = () => {
             <Title size={24}>Faça seu login</Title>
             <Spacer height={24} />
 
-            <Input name="email" icon="mail" placeholder="E-mail" />
-            <Input name="password" icon="lock" placeholder="Senha" />
+            <Form ref={formRef} onSubmit={onSubmitHandler}>
+              <Input name="email" icon="mail" placeholder="E-mail" />
+              <Input name="password" icon="lock" placeholder="Senha" />
 
-            <Button
-              onPress={() => {
-                console.log('Deu')
-              }}
-            >
-              Entrar
-            </Button>
+              <Button onPress={() => formRef.current?.submitForm()}>Entrar</Button>
+            </Form>
 
             <Spacer height={24} />
             <TouchableOpacity>
