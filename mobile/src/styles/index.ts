@@ -7,6 +7,7 @@ import theme from './theme.json'
 // https://reactnative.dev/docs/flexbox
 // https://reactnative.dev/docs/layout-props#position
 interface IBox {
+  flex?: number
   background?: 'primary'|'secondary'|'background'|'white'|'danger'
   row?: boolean
   justify?: 'flex-start'|'flex-end'|'space-between'|'space-around'|'space-evenly'
@@ -21,11 +22,14 @@ interface IBox {
   height?: string
   absolute?: boolean
   top?: number
+  bottom?: number
+  left?: number
+  right?: number
   zIndex?: number
 }
 
 export const Box = styled.View<IBox>`
-  flex: 1;
+  flex: ${props => props.flex || 1};
   background-color: ${props => props.background ? theme.colors[props.background] : 'transparent'};
   flex-direction: ${props => props.row ? 'row' : 'column'};
   justify-content: ${props => props.justify || 'center'};
@@ -35,19 +39,24 @@ export const Box = styled.View<IBox>`
   margin: ${props => props.margin ? `${props.margin}px`:
     props.marginV ? `${props.marginV}px 0` : props.marginH ? `0 ${props.marginH}px` : 0};
   width: 100%;
+  height: auto;
   max-width: ${props => props.width || '100%'};
-  max-height: ${props => props.height ? props.height : 'auto'};
+  max-height: ${props => props.height ? props.height + 'px' : 'auto'};
   position: ${props => props.absolute ? 'absolute' : 'relative'};
-  top: ${props => props.top || 0}px;
+  top: null;//${props => props.top || 0}px;
+  bottom: ${props => props.bottom || 0}px;
+  left: ${props => props.left || 0}px;
+  right: ${props => props.right || 0}px;
   z-index: ${props => props.zIndex || 1};
 `
+
 interface ITitle {
-  color: string;
-  size: number;
+  color?: string;
+  size?: number;
 }
 export const Title = styled.Text<ITitle>`
   font-family: 'RobotoSlab-Medium';
-  font-size: ${props => props.size || 20 }px;
+  font-size: ${props => props.size || 16}px;
   color: ${props => props.color ? theme.colors[props.color] : theme.colors.white };
 `
 

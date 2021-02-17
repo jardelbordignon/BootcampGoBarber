@@ -4,7 +4,6 @@ import { RectButton } from 'react-native-gesture-handler'
 import theme from '../../styles/theme.json'
 
 export const RectBtn = styled(RectButton) `
-  width: 100%;
   height: 60px;
   background: ${theme.colors.primary};
   border-radius: 10px;
