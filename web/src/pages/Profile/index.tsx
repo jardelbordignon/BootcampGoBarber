@@ -17,7 +17,9 @@ import { AnimatedContainer, Header, HeaderContent, Container, Content, AvatarInp
 interface IProfile {
   name: string
   email: string
+  old_password: string
   password: string
+  password_confirmation: string
 }
 
 const Profile: React.FC = () => {
@@ -34,18 +36,39 @@ const Profile: React.FC = () => {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome é obrigatório'),
           email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
-          password: Yup.string().min(6, 'Senha no mínimo 6 caracteres'),
+          old_password: Yup.string(),
+          password: Yup.string().when('old_password', {
+            is: (val) => !!val.length,
+            then: Yup.string().min(6, 'Senha deve ter 6 dígitos ou mais'),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string()
+            .when('old_password', {
+              is: (val) => !!val.length,
+              then: Yup.string().required('Confirmação é obrigatória'),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('password'), ''], 'Confirmação diferente da senha'),
         })
 
         await schema.validate(data, { abortEarly: false })
 
+        const { name, email, old_password, password, password_confirmation } = data
+        const formData = {
+          name,
+          email,
+          ...(old_password ? { old_password, password, password_confirmation } : {}),
+        }
+
         setLoading(true)
-        await api.post('/users', data)
+        const response = await api.put('/profile', formData)
+
+        updateUser(response.data)
 
         addToast({
           type: 'success',
-          title: 'Cadastro realizado!',
-          description: 'Faça seu login no GoBarber',
+          title: 'Perfil atualizado!',
+          description: 'Seu perfil foi atualizado com sucesso!',
         })
 
         history.push('/')
@@ -58,14 +81,14 @@ const Profile: React.FC = () => {
         // trigger a toast
         addToast({
           type: 'error',
-          title: 'Erro no cadastro',
-          description: 'Ocorreu um erro ao fazer seu cadastro. Tente novamente',
+          title: 'Erro na atualização',
+          description: 'Ocorreu um erro ao atualizar seu perfil. Tente novamente',
         })
       } finally {
         setLoading(false)
       }
     },
-    [addToast, history]
+    [addToast, history, updateUser]
   )
 
   const onChangeAvatarHandler = useCallback(
@@ -115,7 +138,7 @@ const Profile: React.FC = () => {
             <br />
             <Input name="old_password" icon={FiLock} placeholder="Senha atual" type="password" />
             <Input name="password" icon={FiLock} placeholder="Nova senha" type="password" />
-            <Input name="confirm_password" icon={FiLock} placeholder="Confirmar senha" type="password" />
+            <Input name="password_confirmation" icon={FiLock} placeholder="Confirmar senha" type="password" />
             <Button icon={FiCheck} loading={loading}>
               Salvar alterações
             </Button>
