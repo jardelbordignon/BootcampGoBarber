@@ -2,6 +2,7 @@
   "colors": {
     "primary": "#FF9000",
     "secondary": "#232129",
+    "tertiary": "#9e9e9e",
     "background": "#312E38",
     "white": "#F4EDE8",
     "danger": "#c53030"
