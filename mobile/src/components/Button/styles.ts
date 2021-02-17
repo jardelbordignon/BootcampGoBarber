@@ -8,6 +8,7 @@ export const RectBtn = styled(RectButton) `
   height: 60px;
   background: ${theme.colors.primary};
   border-radius: 10px;
+  margin-top: 8px;
 
   justify-content: center;
   align-items: center;
