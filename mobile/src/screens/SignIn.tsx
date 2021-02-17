@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native'
+import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 import { useNavigation } from '@react-navigation/native'
@@ -22,6 +22,7 @@ const SignIn = () => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
   const nav = useNavigation()
   const formRef = useRef<FormHandles>(null)
+  const passwordInputRef = useRef<TextInput>(null)
 
   useEffect(() => {
     //quando abrir o keyborad
@@ -55,13 +56,31 @@ const SignIn = () => {
             <Spacer height={24} />
 
             <Form ref={formRef} onSubmit={onSubmitHandler}>
-              <Input name="email" icon="mail" placeholder="E-mail" />
-              <Input name="password" icon="lock" placeholder="Senha" />
+              <Input
+                name="email"
+                icon="mail"
+                placeholder="E-mail"
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
+              />
+
+              <Input
+                ref={passwordInputRef}
+                name="password"
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
 
               <Button onPress={() => formRef.current?.submitForm()}>Entrar</Button>
             </Form>
 
-            <Spacer height={24} />
+            <Spacer height="24px" />
             <TouchableOpacity>
               <Title>Esqueci minha senha</Title>
             </TouchableOpacity>
@@ -78,7 +97,7 @@ const SignIn = () => {
               <Title color="primary">Criar uma conta</Title>
             </Box>
           </TouchableOpacity>
-          <Spacer width={`${getBottomSpace()}px`} />
+          <Spacer height={`${getBottomSpace()}px`} />
         </Box>
       )}
     </>
