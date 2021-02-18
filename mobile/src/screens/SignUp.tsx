@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import {
+  Alert,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 import { useNavigation } from '@react-navigation/native'
 import { Form } from '@unform/mobile'
 import { FormHandles } from '@unform/core'
+import * as Yup from 'yup'
 
+import getValidationsErrors from '../utils/getValidationsErrors'
 import Button from '../components/Button'
 import Input from '../components/Input'
 
@@ -25,6 +36,7 @@ const SignUp = () => {
   const formRef = useRef<FormHandles>(null)
   const emailInputRef = useRef<TextInput>(null)
   const passwordInputRef = useRef<TextInput>(null)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     //quando abrir o keyborad
@@ -38,8 +50,34 @@ const SignUp = () => {
     }
   }, [])
 
-  const onSubmitHandler = useCallback((data: ISignUp) => {
-    console.log(data)
+  const onSubmitHandler = useCallback(async (data: ISignUp) => {
+    try {
+      formRef.current?.setErrors({})
+      const schema = Yup.object().shape({
+        name: Yup.string().required('Nome é obrigatório'),
+        email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+        password: Yup.string().required('Senha é obrigatória'),
+      })
+
+      await schema.validate(data, { abortEarly: false })
+
+      setLoading(true)
+
+      // await signIn({
+      //   email: data.email,
+      //   password: data.password,
+      // })
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationsErrors(error)
+        formRef.current?.setErrors(errors)
+        return
+      }
+
+      Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, confira suas credenciais')
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   return (
@@ -90,7 +128,9 @@ const SignUp = () => {
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
 
-              <Button onPress={() => formRef.current?.submitForm()}>Cadastrar</Button>
+              <Button loading={loading} onPress={() => formRef.current?.submitForm()}>
+                Cadastrar
+              </Button>
             </Form>
           </Box>
         </ScrollView>

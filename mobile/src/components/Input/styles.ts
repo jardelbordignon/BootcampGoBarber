@@ -4,7 +4,7 @@ import theme from '../../styles/theme.json'
 
 interface IContainer {
   isActive: boolean
-  isErrored?: boolean
+  hasError?: boolean
 }
 
 export const Container = styled.View<IContainer>`
@@ -18,10 +18,10 @@ export const Container = styled.View<IContainer>`
   border-width: 2px;
   border-style: solid;
   border-color: ${props =>
-    props.isActive
-    ? theme.colors.primary
-    : props.isErrored
+    props.hasError
     ? theme.colors.danger
+    : props.isActive
+    ? theme.colors.primary
     : theme.colors.secondary
   };
 
@@ -39,13 +39,15 @@ export const TextInput = styled.TextInput`
 
 interface IPlaceholder {
   isActive: boolean
+  hasError?: boolean
 }
 export const Placeholder = styled.Text<IPlaceholder>`
   position: absolute;
   top: 30%;
   left: 50px;
   font-size: 18px;
-  color: ${theme.colors.tertiary};
+  color: ${props => theme.colors[props.hasError ? 'danger' : 'tertiary']};
+  z-index: -1;
 
   ${props => (props.isActive) && css`
     top: 3px;

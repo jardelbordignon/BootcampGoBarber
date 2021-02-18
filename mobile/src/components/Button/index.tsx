@@ -1,16 +1,21 @@
 import React from 'react'
 import { RectButtonProperties } from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/Feather'
 
 import { RectBtn, BtnTxt } from './styles'
 
 interface IButton extends RectButtonProperties {
   children: string
+  loading?: boolean
+  icon?: string
 }
 
-const Button: React.FC<IButton> = ({ children, ...rest }) => {
+const Button: React.FC<IButton> = ({ children, icon, loading, ...rest }) => {
   return (
-    <RectBtn {...rest}>
+    <RectBtn {...rest} disabled={loading}>
+      {icon ? <Icon name={icon} size={20} /> : <BtnTxt />}
       <BtnTxt>{children}</BtnTxt>
+      {loading ? <Icon name="loader" size={20} /> : <BtnTxt />}
     </RectBtn>
   )
 }
