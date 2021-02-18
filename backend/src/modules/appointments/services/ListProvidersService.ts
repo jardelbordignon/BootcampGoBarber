@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe'
+import { classToClass } from 'class-transformer'
 
 import { DI_USERS_REPOSITORY } from '@/shared/DependencyInjectionContainer'
 import IUsersRepository from '@/modules/users/repositories/IUsersRepository'
@@ -31,7 +32,7 @@ export default class ListProvidersService {
         except_user_id: user_id
       })
 
-      await this.cacheProvider.set(`providers-list:${user_id}`, users)
+      await this.cacheProvider.set(`providers-list:${user_id}`, classToClass(users))
     }
 
     return users

@@ -41,7 +41,7 @@ export const Box = styled.View<IBox>`
   width: 100%;
   height: auto;
   max-width: ${props => props.width || '100%'};
-  max-height: ${props => props.height ? props.height + 'px' : 'auto'};
+  max-height: ${props => props.height ? props.height : 'auto'};
   position: ${props => props.absolute ? 'absolute' : 'relative'};
   top: null;//${props => props.top || 0}px;
   bottom: ${props => props.bottom || 0}px;
@@ -53,10 +53,12 @@ export const Box = styled.View<IBox>`
 interface ITitle {
   color?: string;
   size?: number;
+  lineH?: number
 }
 export const Title = styled.Text<ITitle>`
   font-family: 'RobotoSlab-Medium';
   font-size: ${props => props.size || 16}px;
+  line-height: ${props => props.lineH || 22}px;
   color: ${props => props.color ? theme.colors[props.color] : theme.colors.white };
 `
 
@@ -67,4 +69,13 @@ interface ISpacer {
 export const Spacer = styled.View<ISpacer> `
   width: ${props => props.width || '100%'};
   height: ${props => props.height || '10px'};
+`
+
+interface ISpacer {
+  size: number
+}
+export const Avatar = styled.Image`
+  width: ${props => props.size || 72}px;
+  height: ${props => props.size || 72}px;
+  border-radius: ${props => props.size || 72}px;
 `
