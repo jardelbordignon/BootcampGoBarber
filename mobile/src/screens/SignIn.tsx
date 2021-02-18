@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import {
+  Alert,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 import { useNavigation } from '@react-navigation/native'
 import { Form } from '@unform/mobile'
 import { FormHandles } from '@unform/core'
+import * as Yup from 'yup'
 
+import getValidationsErrors from '../utils/getValidationsErrors'
 import Button from '../components/Button'
 import Input from '../components/Input'
 
@@ -23,6 +34,7 @@ const SignIn = () => {
   const nav = useNavigation()
   const formRef = useRef<FormHandles>(null)
   const passwordInputRef = useRef<TextInput>(null)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     //quando abrir o keyborad
@@ -36,8 +48,33 @@ const SignIn = () => {
     }
   }, [])
 
-  const onSubmitHandler = useCallback((data: ISignIn) => {
-    console.log(data)
+  const onSubmitHandler = useCallback(async (data: ISignIn) => {
+    try {
+      formRef.current?.setErrors({})
+      const schema = Yup.object().shape({
+        email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+        password: Yup.string().required('Senha é obrigatória'),
+      })
+
+      await schema.validate(data, { abortEarly: false })
+
+      setLoading(true)
+
+      // await signIn({
+      //   email: data.email,
+      //   password: data.password,
+      // })
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationsErrors(error)
+        formRef.current?.setErrors(errors)
+        return
+      }
+
+      Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, confira suas credenciais')
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   return (
@@ -48,12 +85,12 @@ const SignIn = () => {
             {!keyboardIsOpen && (
               <>
                 <Image source={logo} />
-                <Spacer height={34} />
+                <Spacer height="43px" />
               </>
             )}
 
             <Title size={24}>Faça seu login</Title>
-            <Spacer height={24} />
+            <Spacer height="24px" />
 
             <Form ref={formRef} onSubmit={onSubmitHandler}>
               <Input
@@ -77,7 +114,9 @@ const SignIn = () => {
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
 
-              <Button onPress={() => formRef.current?.submitForm()}>Entrar</Button>
+              <Button icon="user" loading={loading} onPress={() => formRef.current?.submitForm()}>
+                Entrar
+              </Button>
             </Form>
 
             <Spacer height="24px" />

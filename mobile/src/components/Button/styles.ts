@@ -9,12 +9,15 @@ export const RectBtn = styled(RectButton) `
   border-radius: 10px;
   margin-top: 8px;
 
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 16px;
 `
 
 export const BtnTxt = styled.Text`
   font-family: 'RobotoSlab-Medium';
   color: ${theme.colors.background};
   font-size: 18px;
+  min-width: 20px;
 `

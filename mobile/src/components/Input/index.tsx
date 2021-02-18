@@ -53,7 +53,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, ico
   }, [fieldName, inputValueRef])
 
   return (
-    <Container isActive={isActive}>
+    <Container isActive={isActive} hasError={!!error}>
       <Icon name={icon} size={20} color={isActive ? theme.colors.primary : theme.colors.tertiary} />
       <TextInput
         ref={inputElementRef}
@@ -64,7 +64,11 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, ico
         onBlur={onBlurHandler}
         {...rest}
       />
-      {placeholder && <Placeholder isActive={isActive}>{placeholder}</Placeholder>}
+      {(placeholder || error) && (
+        <Placeholder isActive={isActive} hasError={!!error}>
+          {error ? error : placeholder}
+        </Placeholder>
+      )}
     </Container>
   )
 }
