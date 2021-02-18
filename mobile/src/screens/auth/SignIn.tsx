@@ -16,27 +16,28 @@ import { Form } from '@unform/mobile'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
-import getValidationsErrors from '../utils/getValidationsErrors'
-import Button from '../components/Button'
-import Input from '../components/Input'
+import getValidationsErrors from '../../utils/getValidationsErrors'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
 
-import logo from '../assets/logo.png'
-import theme from '../styles/theme.json'
-import { Box, Title, Spacer } from '../styles'
+import logo from '../../assets/logo.png'
+import theme from '../../styles/theme.json'
+import { Box, Title, Spacer } from '../../styles'
+import { useAuth } from '../../hooks/auth'
 
-interface ISignUp {
-  name: string
+interface ISignIn {
   email: string
   password: string
 }
 
-const SignUp = () => {
+const SignIn = () => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
   const nav = useNavigation()
   const formRef = useRef<FormHandles>(null)
-  const emailInputRef = useRef<TextInput>(null)
   const passwordInputRef = useRef<TextInput>(null)
   const [loading, setLoading] = useState(false)
+
+  const { signIn } = useAuth()
 
   useEffect(() => {
     //quando abrir o keyborad
@@ -48,13 +49,12 @@ const SignUp = () => {
       keyboardDidShowListener.remove()
       keyboardDidHideListener.remove()
     }
-  }, [])
+  }, [signIn])
 
-  const onSubmitHandler = useCallback(async (data: ISignUp) => {
+  const onSubmitHandler = useCallback(async (data: ISignIn) => {
     try {
       formRef.current?.setErrors({})
       const schema = Yup.object().shape({
-        name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
         password: Yup.string().required('Senha é obrigatória'),
       })
@@ -63,10 +63,7 @@ const SignUp = () => {
 
       setLoading(true)
 
-      // await signIn({
-      //   email: data.email,
-      //   password: data.password,
-      // })
+      await signIn(data)
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationsErrors(error)
@@ -88,25 +85,15 @@ const SignUp = () => {
             {!keyboardIsOpen && (
               <>
                 <Image source={logo} />
-                <Spacer height="34px" />
+                <Spacer height="43px" />
               </>
             )}
 
-            <Title size={24}>Crie sua conta</Title>
+            <Title size={24}>Faça seu login</Title>
             <Spacer height="24px" />
 
             <Form ref={formRef} onSubmit={onSubmitHandler}>
               <Input
-                name="name"
-                icon="user"
-                placeholder="Nome"
-                autoCapitalize="words"
-                returnKeyType="next"
-                onSubmitEditing={() => emailInputRef.current?.focus()}
-              />
-
-              <Input
-                ref={emailInputRef}
                 name="email"
                 icon="mail"
                 placeholder="E-mail"
@@ -123,26 +110,30 @@ const SignUp = () => {
                 icon="lock"
                 placeholder="Senha"
                 secureTextEntry
-                textContentType="newPassword"
                 returnKeyType="send"
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
 
-              <Button loading={loading} onPress={() => formRef.current?.submitForm()}>
-                Cadastrar
+              <Button icon="user" loading={loading} onPress={() => formRef.current?.submitForm()}>
+                Entrar
               </Button>
             </Form>
+
+            <Spacer height="24px" />
+            <TouchableOpacity>
+              <Title>Esqueci minha senha</Title>
+            </TouchableOpacity>
           </Box>
         </ScrollView>
       </KeyboardAvoidingView>
 
       {!keyboardIsOpen && (
         <Box paddingV={5} absolute bottom={0} left={0} right={0} background="secondary">
-          <TouchableOpacity onPress={() => nav.goBack()}>
+          <TouchableOpacity onPress={() => nav.navigate('SignUp')}>
             <Box row>
-              <Icon name="arrow-left" size={20} color={theme.colors.white} />
+              <Icon name="log-in" size={20} color={theme.colors.primary} />
               <Spacer width="10px" />
-              <Title color="white">Voltar para login</Title>
+              <Title color="primary">Criar uma conta</Title>
             </Box>
           </TouchableOpacity>
           <Spacer height={`${getBottomSpace()}px`} />
@@ -152,4 +143,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignIn

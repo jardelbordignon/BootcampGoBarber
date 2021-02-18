@@ -1,22 +1,25 @@
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { Image } from 'react-native'
 
-import SignIn from '../screens/SignIn'
-import SignUp from '../screens/SignUp'
-import theme from '../styles/theme.json'
+import { useAuth } from '../hooks/auth'
+import AppRoutes from './app.routes'
+import AuthRoutes from './auth.routes'
 
-const { Navigator, Screen } = createStackNavigator()
+import logo from '../assets/logo.png'
+import { Box } from '../styles'
 
-const AuthRoutes: React.FC = () => (
-  <Navigator
-    screenOptions={{
-      headerShown: false,
-      cardStyle: { backgroundColor: theme.colors.background },
-    }}
-  >
-    <Screen name="SignIn" component={SignIn} />
-    <Screen name="SignUp" component={SignUp} />
-  </Navigator>
-)
+const Routes: React.FC = () => {
+  const { user, loading } = useAuth()
 
-export default AuthRoutes
+  if (loading) {
+    return (
+      <Box background="background">
+        <Image source={logo} />
+      </Box>
+    )
+  }
+
+  return user ? <AppRoutes /> : <AuthRoutes />
+}
+
+export default Routes

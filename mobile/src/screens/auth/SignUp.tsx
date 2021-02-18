@@ -16,23 +16,26 @@ import { Form } from '@unform/mobile'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
-import getValidationsErrors from '../utils/getValidationsErrors'
-import Button from '../components/Button'
-import Input from '../components/Input'
+import api from '../../services/api'
+import getValidationsErrors from '../../utils/getValidationsErrors'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
 
-import logo from '../assets/logo.png'
-import theme from '../styles/theme.json'
-import { Box, Title, Spacer } from '../styles'
+import logo from '../../assets/logo.png'
+import theme from '../../styles/theme.json'
+import { Box, Title, Spacer } from '../../styles'
 
-interface ISignIn {
+interface ISignUp {
+  name: string
   email: string
   password: string
 }
 
-const SignIn = () => {
+const SignUp = () => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
   const nav = useNavigation()
   const formRef = useRef<FormHandles>(null)
+  const emailInputRef = useRef<TextInput>(null)
   const passwordInputRef = useRef<TextInput>(null)
   const [loading, setLoading] = useState(false)
 
@@ -48,10 +51,11 @@ const SignIn = () => {
     }
   }, [])
 
-  const onSubmitHandler = useCallback(async (data: ISignIn) => {
+  const onSubmitHandler = useCallback(async (data: ISignUp) => {
     try {
       formRef.current?.setErrors({})
       const schema = Yup.object().shape({
+        name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
         password: Yup.string().required('Senha é obrigatória'),
       })
@@ -59,11 +63,11 @@ const SignIn = () => {
       await schema.validate(data, { abortEarly: false })
 
       setLoading(true)
+      await api.post('/users', data)
 
-      // await signIn({
-      //   email: data.email,
-      //   password: data.password,
-      // })
+      Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação')
+
+      nav.navigate('SignIn')
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationsErrors(error)
@@ -71,7 +75,9 @@ const SignIn = () => {
         return
       }
 
-      Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, confira suas credenciais')
+      console.log(error)
+
+      Alert.alert('Erro ao realizar cadastro', 'Ocorreu um erro ao realizar seu cadastro, confira suas informações')
     } finally {
       setLoading(false)
     }
@@ -85,15 +91,25 @@ const SignIn = () => {
             {!keyboardIsOpen && (
               <>
                 <Image source={logo} />
-                <Spacer height="43px" />
+                <Spacer height="34px" />
               </>
             )}
 
-            <Title size={24}>Faça seu login</Title>
+            <Title size={24}>Crie sua conta</Title>
             <Spacer height="24px" />
 
             <Form ref={formRef} onSubmit={onSubmitHandler}>
               <Input
+                name="name"
+                icon="user"
+                placeholder="Nome"
+                autoCapitalize="words"
+                returnKeyType="next"
+                onSubmitEditing={() => emailInputRef.current?.focus()}
+              />
+
+              <Input
+                ref={emailInputRef}
                 name="email"
                 icon="mail"
                 placeholder="E-mail"
@@ -110,30 +126,26 @@ const SignIn = () => {
                 icon="lock"
                 placeholder="Senha"
                 secureTextEntry
+                textContentType="newPassword"
                 returnKeyType="send"
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
 
-              <Button icon="user" loading={loading} onPress={() => formRef.current?.submitForm()}>
-                Entrar
+              <Button loading={loading} onPress={() => formRef.current?.submitForm()}>
+                Cadastrar
               </Button>
             </Form>
-
-            <Spacer height="24px" />
-            <TouchableOpacity>
-              <Title>Esqueci minha senha</Title>
-            </TouchableOpacity>
           </Box>
         </ScrollView>
       </KeyboardAvoidingView>
 
       {!keyboardIsOpen && (
         <Box paddingV={5} absolute bottom={0} left={0} right={0} background="secondary">
-          <TouchableOpacity onPress={() => nav.navigate('SignUp')}>
+          <TouchableOpacity onPress={() => nav.goBack()}>
             <Box row>
-              <Icon name="log-in" size={20} color={theme.colors.primary} />
+              <Icon name="arrow-left" size={20} color={theme.colors.white} />
               <Spacer width="10px" />
-              <Title color="primary">Criar uma conta</Title>
+              <Title color="white">Voltar para login</Title>
             </Box>
           </TouchableOpacity>
           <Spacer height={`${getBottomSpace()}px`} />
@@ -143,4 +155,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignUp
