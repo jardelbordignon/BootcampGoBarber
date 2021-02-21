@@ -10,7 +10,7 @@ export default class Notification extends CreatedAtUpdatedAt {
   @Column()
   content: string
 
-  @Column('uuid')
+  @Column()
   recipient_id: string
 
   @Column({ default: false })

@@ -27,14 +27,14 @@ describe('ListProviderMounthAvailabilityService', () => {
       await fakeAppointmentsRepository.create({
         provider_id: 'provider',
         client_id: 'client',
-        date: new Date(2021, 0, appoint[0], appoint[1], 0, 0) // 2021/jan/29 10:00:00 ...
+        date: new Date(2021, 2, appoint[0], appoint[1], 0, 0) // 2021/jan/29 10:00:00 ...
       })
     ))
 
     const availability = await listProviderMonthAvailabilityService.execute({
       provider_id: 'provider',
       year: 2021,
-      month: 1 // jan
+      month: 3 // jan
     })
 
     expect(availability).toEqual(expect.arrayContaining([

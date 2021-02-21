@@ -1,4 +1,5 @@
 import { startOfHour, isBefore, getHours, format } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 import { injectable, inject } from 'tsyringe'
 
 import { DI_CACHE_PROVIDER } from '@/shared/providers/CacheProvider'
@@ -59,11 +60,11 @@ export default class CreateAppointmentService {
     })
 
     const client = await this.usersRepository.findById(client_id)
-    const dateFormatted = format(appointmentDate, "dd/MMM/yyyy 'às' HH:mm'h'")
+    const dateFormatted = format(appointmentDate, "dd/MMM cccc 'às' HH:mm'h'", { locale: ptBR })
 
     await this.notificationsRepository.create({
       recipient_id: provider_id,
-      content: `Agendamento com ${client?.name} para dia ${dateFormatted}`
+      content: `(${dateFormatted}) - ${client!.name}`
     })
 
     await this.cacheProvider.remove(
