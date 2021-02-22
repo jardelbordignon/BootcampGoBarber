@@ -1,16 +1,13 @@
 import styled from 'styled-components/native'
-import { Dimensions } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
-
-const height = Dimensions.get('window').height
 
 import theme from '../../styles/theme.json'
 
 export const RectBtn = styled(RectButton) `
-  height: ${height/13}px;
+  height: 60px;
   background: ${theme.colors.primary};
   border-radius: 10px;
-  margin-top: ${height/85}px;
+  margin-top: 8px;
 
   flex-direction: row;
   justify-content: space-between;
