@@ -25,7 +25,7 @@ interface IAuthContext {
   user: IUser
   signIn(credentials: ISignInCredentials): Promise<void>
   signOut(): void
-  updateUser(user: IUser): void
+  updateUser(user: IUser): Promise<void>
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext)

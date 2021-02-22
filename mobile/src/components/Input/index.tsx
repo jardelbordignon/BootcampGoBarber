@@ -50,6 +50,8 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, ico
         inputElementRef.current.setNativeProps({ text: '' })
       },
     })
+
+    setIsActive(!!inputValueRef.current?.value)
   }, [fieldName, inputValueRef])
 
   return (

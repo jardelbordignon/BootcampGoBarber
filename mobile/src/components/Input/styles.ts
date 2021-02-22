@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native'
-
 import theme from '../../styles/theme.json'
 
 interface IContainer {
@@ -9,7 +8,7 @@ interface IContainer {
 
 export const Container = styled.View<IContainer>`
   width: 100%;
-  height: 60px;
+  height: 50px;
   padding: 0 16px;
   background: ${theme.colors.secondary};
   border-radius: 10px;
@@ -43,15 +42,19 @@ interface IPlaceholder {
 }
 export const Placeholder = styled.Text<IPlaceholder>`
   position: absolute;
-  top: 30%;
+  top: 20%;
   left: 50px;
   font-size: 18px;
   color: ${props => theme.colors[props.hasError ? 'danger' : 'tertiary']};
   z-index: -1;
 
   ${props => (props.isActive) && css`
-    top: 3px;
-    left: 40px;
+    top: -10px;
+    left: 30px;
     font-size: 12px;
+    color: ${props => theme.colors[props.hasError ? 'danger' : 'primary']};
+    background: ${theme.colors.secondary};
+    padding: 3px 8px;
+    border-radius: 10px;
   `};
 `
