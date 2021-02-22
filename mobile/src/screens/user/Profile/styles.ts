@@ -24,3 +24,28 @@ export const UserAvatar = styled.Image`
   margin-top: 64px;
   align-self: center;
 `
+
+export const ImageFromSelector = styled.View`
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index:2;
+  background-color: ${theme.colors.secondary};
+  padding: 24px;
+  justify-content: center;
+`
+
+export const ButtonClose = styled.TouchableOpacity`
+  margin-left: auto;
+`
+
+export const TitleAvatarFrom = styled(Title)`
+  margin: 5px;
+  text-align: center;
+`
+
+export const ButtonsContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+`

@@ -2,20 +2,19 @@ import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { View } from 'react-native'
 import {
   Alert,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   TextInput,
-  TouchableOpacity,
+  PermissionsAndroid
 } from 'react-native'
-
-import { getBottomSpace } from 'react-native-iphone-x-helper'
 import { useNavigation } from '@react-navigation/native'
 import { Form } from '@unform/mobile'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
+import * as ImagePicker from 'react-native-image-picker'
+import Icon from 'react-native-vector-icons/Feather'
 
 import api from '../../../services/api'
 import getValidationsErrors from '../../../utils/getValidationsErrors'
@@ -23,7 +22,8 @@ import Button from '../../../components/Button'
 import Input from '../../../components/Input'
 
 import { useAuth } from '../../../hooks/auth'
-import { Container, Title, UserAvatarButton, UserAvatar } from './styles'
+import theme from '../../../styles/theme.json'
+import { Container, Title, UserAvatarButton, UserAvatar, ImageFromSelector, ButtonClose, TitleAvatarFrom, ButtonsContainer } from './styles'
 
 interface ISignUp {
   name: string
@@ -42,7 +42,8 @@ const Profile: React.FC = () => {
   const passwordConfirmationInputRef = useRef<TextInput>(null)
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { user, updateUser } = useAuth()
+  const [showImageFromSelector, setShowImageFromSelector] = useState(false)
+  const { user, updateUser, signOut } = useAuth()
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardIsOpen(true))
@@ -108,7 +109,62 @@ const Profile: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [updateUser, nav])
+
+  // https://app.rocketseat.com.br/node/finalizando-front-end-mobile-do-app/group/perfil/lesson/atualizacao-do-avatar
+  const imagePickerHandler = useCallback(async (from: 'launchCamera' | 'launchImageLibrary') => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Permissão ao GoBarber",
+          message:"GoBarber precisa acesso a sua câmera",
+          buttonNeutral: "Pergunte-me depois",
+          buttonNegative: "Negar aacesso",
+          buttonPositive: "Permitir"
+        }
+      )
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        ImagePicker[from]({
+          mediaType: 'photo',
+          // includeBase64: false,
+          // maxHeight: 200,
+          // maxWidth: 200,
+        }, response => {
+          if (response.didCancel) return
+
+          if (response.errorMessage) {
+            Alert.alert('Erro ao atualizar seu avatar')
+            console.log('Erro ao atualizar um avatar:', response.errorCode , response.errorMessage)
+            return
+          }
+
+          const data = new FormData()
+
+          data.append('avatar', {
+            type: 'image/jpeg',
+            name: `${user.id}.jpg`,
+            uri: response.uri
+          })
+
+          api.patch('/users/avatar', data)
+            .then(res => {
+              updateUser(res.data)
+            }).catch((error)=>{
+              console.log(error);
+              Alert.alert(error.message);
+           }).finally(() => setShowImageFromSelector(false))
+
+        })
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+
+  }, [updateUser, user])
 
   return (
     <>
@@ -116,14 +172,28 @@ const Profile: React.FC = () => {
         <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
           <Container>
 
+            { showImageFromSelector &&
+              <ImageFromSelector>
+                <ButtonClose onPress={() => setShowImageFromSelector(false)}>
+                  <Icon name='x' size={28} color={theme.colors.white} />
+                </ButtonClose>
+                <TitleAvatarFrom>Criar um avatar a partir de:</TitleAvatarFrom>
+                <ButtonsContainer>
+                  <Button icon='camera' onPress={() => imagePickerHandler('launchCamera')} />
+                  <Button icon='folder' onPress={() => imagePickerHandler('launchImageLibrary')} />
+                </ButtonsContainer>
+              </ImageFromSelector>
+            }
+
             {!keyboardIsOpen &&
-              <UserAvatarButton onPress={() => {}}>
+              <UserAvatarButton onPress={() => setShowImageFromSelector(true)}>
                 <UserAvatar source={{ uri: user.avatar_url }} />
               </UserAvatarButton>
             }
 
             <View>
               <Title size={24}>Meu perfil</Title>
+              <Button onPress={signOut}>Sair</Button>
             </View>
 
             <Form ref={formRef} initialData={user} onSubmit={onSubmitHandler}>
