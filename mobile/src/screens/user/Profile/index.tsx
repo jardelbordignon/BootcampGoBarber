@@ -9,12 +9,12 @@ import {
   TextInput,
   PermissionsAndroid
 } from 'react-native'
+import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
 import { Form } from '@unform/mobile'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
-import * as ImagePicker from 'react-native-image-picker'
-import Icon from 'react-native-vector-icons/Feather'
+import ImagePicker from 'react-native-image-crop-picker'
 
 import api from '../../../services/api'
 import getValidationsErrors from '../../../utils/getValidationsErrors'
@@ -22,8 +22,7 @@ import Button from '../../../components/Button'
 import Input from '../../../components/Input'
 
 import { useAuth } from '../../../hooks/auth'
-import theme from '../../../styles/theme.json'
-import { Container, Title, UserAvatarButton, UserAvatar, ImageFromSelector, ButtonClose, TitleAvatarFrom, ButtonsContainer } from './styles'
+import { Container, Title, UserAvatarButton, UserAvatar, ImageFromSelector, ButtonClose, ButtonsContainer } from './styles'
 
 interface ISignUp {
   name: string
@@ -42,8 +41,8 @@ const Profile: React.FC = () => {
   const passwordConfirmationInputRef = useRef<TextInput>(null)
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [showImageFromSelector, setShowImageFromSelector] = useState(false)
-  const { user, updateUser, signOut } = useAuth()
+  const [showImagePickerButtons, setShowImagePickerButtons] = useState(false)
+  const { user, updateUser } = useAuth()
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardIsOpen(true))
@@ -109,10 +108,9 @@ const Profile: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }, [updateUser, nav])
+  }, [])
 
-  // https://app.rocketseat.com.br/node/finalizando-front-end-mobile-do-app/group/perfil/lesson/atualizacao-do-avatar
-  const imagePickerHandler = useCallback(async (from: 'launchCamera' | 'launchImageLibrary') => {
+  const imagePickerHandler = useCallback(async (from: 'openCamera' | 'openPicker') => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -126,37 +124,28 @@ const Profile: React.FC = () => {
       )
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        ImagePicker[from]({
-          mediaType: 'photo',
-          // includeBase64: false,
-          // maxHeight: 200,
-          // maxWidth: 200,
-        }, response => {
-          if (response.didCancel) return
 
-          if (response.errorMessage) {
-            Alert.alert('Erro ao atualizar seu avatar')
-            console.log('Erro ao atualizar um avatar:', response.errorCode , response.errorMessage)
-            return
-          }
+        ImagePicker[from]({
+          compressImageMaxHeight: 250,
+          compressImageMaxWidth: 200,
+          cropping: false
+        })
+        .then(image => {
 
           const data = new FormData()
 
           data.append('avatar', {
-            type: 'image/jpeg',
             name: `${user.id}.jpg`,
-            uri: response.uri
+            type: image.mime,
+            uri: image.path
           })
 
           api.patch('/users/avatar', data)
-            .then(res => {
-              updateUser(res.data)
-            }).catch((error)=>{
-              console.log(error);
-              Alert.alert(error.message);
-           }).finally(() => setShowImageFromSelector(false))
-
+            .then(res => updateUser(res.data))
         })
+        .catch(error => console.log(error))
+        .finally(() => setShowImagePickerButtons(false))
+
       } else {
         console.log("Camera permission denied");
       }
@@ -164,7 +153,7 @@ const Profile: React.FC = () => {
       console.warn(err);
     }
 
-  }, [updateUser, user])
+  }, [updateUser, user.id])
 
   return (
     <>
@@ -172,28 +161,27 @@ const Profile: React.FC = () => {
         <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
           <Container>
 
-            { showImageFromSelector &&
+            { showImagePickerButtons &&
               <ImageFromSelector>
-                <ButtonClose onPress={() => setShowImageFromSelector(false)}>
-                  <Icon name='x' size={28} color={theme.colors.white} />
+                <ButtonClose onPress={() => setShowImagePickerButtons(false)}>
+                  <Icon name='x' size={24} color='#ccc' />
                 </ButtonClose>
-                <TitleAvatarFrom>Criar um avatar a partir de:</TitleAvatarFrom>
+                <Title>Selecionar um avatar</Title>
                 <ButtonsContainer>
-                  <Button icon='camera' onPress={() => imagePickerHandler('launchCamera')} />
-                  <Button icon='folder' onPress={() => imagePickerHandler('launchImageLibrary')} />
+                  <Button icon='camera' onPress={() => imagePickerHandler('openCamera')} />
+                  <Button icon='folder' onPress={() => imagePickerHandler('openPicker')} />
                 </ButtonsContainer>
               </ImageFromSelector>
             }
 
             {!keyboardIsOpen &&
-              <UserAvatarButton onPress={() => setShowImageFromSelector(true)}>
+              <UserAvatarButton onPress={() => setShowImagePickerButtons(true)}>
                 <UserAvatar source={{ uri: user.avatar_url }} />
               </UserAvatarButton>
             }
 
             <View>
               <Title size={24}>Meu perfil</Title>
-              <Button onPress={signOut}>Sair</Button>
             </View>
 
             <Form ref={formRef} initialData={user} onSubmit={onSubmitHandler}>
